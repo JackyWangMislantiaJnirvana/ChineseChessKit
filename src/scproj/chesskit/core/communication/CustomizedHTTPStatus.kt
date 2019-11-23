@@ -17,6 +17,7 @@ val GAME_OVER = Status.OK.description("Game over")
 // Game registration
 val PARING_COMPLETE = Status.OK.description("Pairing complete")
 val WAITING_FOR_OPPONENT = Status.ACCEPTED.description("Registered, waiting for opponent")
+val SIDE_OCCUPIED = Status.NOT_ACCEPTABLE.description("Side already occupied")
 
 infix fun Status.means(status: Status) =
     status == this && status.description == this.description

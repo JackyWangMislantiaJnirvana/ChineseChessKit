@@ -1,6 +1,10 @@
 # 算法函数接口文档
 
-## 完整示例
+## 自动下棋算法
+
+给定棋盘状态，站在一方玩家的立场上计算出下一步走棋动作。用于人机对战。
+
+###示例
 
 ```java
 public static Movement getNextStep(ChessGrid chessGrid, PlayerSide playerSide) {
@@ -26,7 +30,7 @@ public static Movement getNextStep(ChessGrid chessGrid, PlayerSide playerSide) {
 }
 ```
 
-## 棋盘的刻画
+### 棋盘的刻画
 
 用一个枚举量表示一个棋子。
 
@@ -63,9 +67,22 @@ class ChessGrid {
 }
 ```
 
-## 关于坐标约定
+### 关于坐标约定
 
 棋盘是竖着摆，楚河汉界是水平。原点的位置是：当棋盘的红方在下面的时候，棋盘的左上角。向下走是x轴正方向，向右走是y轴正方向。
 访问点阵中的成员：`grid[x轴坐标][y轴坐标]`
 
+## 胜负判断
+
+给定棋盘状态，判断胜负。留空的代码位于`scproj.chesskit.core.chess.EndGameDetect`类。
+
+把代码装进静态方法`getWinner`
+
+```java
+public static PlayerSide getWinner(ChessGrid chessGrid) {
+  // 根据棋盘状态判断哪一方玩家胜利，返回红方玩家(PlayerSide.RED)或者黑方玩家(PlayerSide.BLACK)
+  // 如果棋局并没有将死，返回null
+  return PlayerSide.BLACK;
+}
+```
 

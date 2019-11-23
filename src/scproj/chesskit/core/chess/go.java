@@ -1,7 +1,6 @@
 package scproj.chesskit.core.chess;
 
 import scproj.chesskit.core.data.Movement;
-import scproj.chesskit.core.data.DataModelsKt.*;
 import scproj.chesskit.core.data.PlayerSide;
 
 public class go {
@@ -23,5 +22,9 @@ public class go {
         //
         // 下面是一个例子：
         return new Movement(PlayerSide.BLACK, 1, 1, 2, 2, false);
+    }
+
+    public static void main(String[] args) {
+
     }
 }

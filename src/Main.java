@@ -5,5 +5,8 @@ public class Main {
     public static void main(String[] args) {
         Sample s = new Sample(1);
         s.sayHello();
+        s.sayHello();
+        s.sayHello();
+        s.sayHello();
     }
 }

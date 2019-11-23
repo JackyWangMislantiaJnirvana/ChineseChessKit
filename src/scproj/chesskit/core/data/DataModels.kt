@@ -31,8 +31,7 @@ data class Coordinate(
     @Json(name = "position_y") val positionY: Int
 )
 
-fun generateMovement(player: PlayerSide, fromX: Int, fromY: Int, toX: Int, toY: Int, isUndo: Boolean) =
-    Movement(player = player,
-        movingFrom = Coordinate(fromX, fromY),
-        movingTo = Coordinate(toX, toY),
-        isUndo = isUndo)
+data class Registration(
+    @Json(name = "red_occupied") val redOccupied: Boolean,
+    @Json(name = "black_occupied") val blackOccupied: Boolean
+)
