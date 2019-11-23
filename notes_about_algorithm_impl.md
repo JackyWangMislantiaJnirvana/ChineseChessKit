@@ -1,34 +1,6 @@
 # 算法函数接口文档
 
-## 自动下棋算法
-
-给定棋盘状态，站在一方玩家的立场上计算出下一步走棋动作。用于人机对战。
-
-###示例
-
-```java
-public static Movement getNextStep(ChessGrid chessGrid, PlayerSide playerSide) {
-  // 这样获取点阵
-  ChessGridElement[][] grid = chessGrid.getGrid();
-  
-  // ......解决问题
-  
-  // 如何返回结果：new一个Movement对象出来，填入谁走的，从哪里移动到哪里，是否是悔棋
-  // 关于如何调用构造函数：
-  // Movement(
-  //  	PlayerSide 谁走的,
-  //  	Integer 从哪个x坐标拿棋子,
-  //  	Integer 从哪个y坐标拿棋子,
-  //  	Integer 把拿起来的棋子放到哪个x坐标,
-  //  	Integer 把拿起来的棋子放到哪个y坐标,
-  //  	Boolean 是否是悔棋
-  // )
-  //
-  // 下面是一个例子：
-  // 结果是"将位于(1, 1)的棋子移动到(2, 2)"
-  return new Movement(playerSide, 1, 1, 2, 2, false);
-}
-```
+## General Notes
 
 ### 棋盘的刻画
 
@@ -72,6 +44,36 @@ class ChessGrid {
 棋盘是竖着摆，楚河汉界是水平。原点的位置是：当棋盘的红方在下面的时候，棋盘的左上角。向下走是x轴正方向，向右走是y轴正方向。
 访问点阵中的成员：`grid[x轴坐标][y轴坐标]`
 
+## 自动下棋算法
+
+给定棋盘状态，站在一方玩家的立场上计算出下一步走棋动作。用于人机对战。
+
+###示例
+
+```java
+public static Movement getNextStep(ChessGrid chessGrid, PlayerSide playerSide) {
+  // 这样获取点阵
+  ChessGridElement[][] grid = chessGrid.getGrid();
+  
+  // ......解决问题
+  
+  // 如何返回结果：new一个Movement对象出来，填入谁走的，从哪里移动到哪里，是否是悔棋
+  // 关于如何调用构造函数：
+  // Movement(
+  //  	PlayerSide 谁走的,
+  //  	Integer 从哪个x坐标拿棋子,
+  //  	Integer 从哪个y坐标拿棋子,
+  //  	Integer 把拿起来的棋子放到哪个x坐标,
+  //  	Integer 把拿起来的棋子放到哪个y坐标,
+  //  	Boolean 是否是悔棋
+  // )
+  //
+  // 下面是一个例子：
+  // 结果是"将位于(1, 1)的棋子移动到(2, 2)"
+  return new Movement(playerSide, 1, 1, 2, 2, false);
+}
+```
+
 ## 胜负判断
 
 给定棋盘状态，判断胜负。留空的代码位于`scproj.chesskit.core.chess.EndGameDetect`类。
@@ -85,4 +87,3 @@ public static PlayerSide getWinner(ChessGrid chessGrid) {
   return PlayerSide.BLACK;
 }
 ```
-
