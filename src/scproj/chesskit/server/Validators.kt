@@ -16,7 +16,7 @@ import scproj.chesskit.core.data.playerSideDeserialize
 // Play validators
 // Compose them strictly in order!
 // Pre-request validators
-fun checkPlayerSide(serverModel: ServerModel): Filter = Filter { handler: HttpHandler ->
+fun checkPlayerSide(): Filter = Filter { handler: HttpHandler ->
     { request: Request ->
         val playerSide = playerSideDeserialize(request.path("side"))
         if (playerSide != null) {
@@ -27,7 +27,7 @@ fun checkPlayerSide(serverModel: ServerModel): Filter = Filter { handler: HttpHa
     }
 }
 
-fun checkMovement(serverModel: ServerModel): Filter = Filter { handler: HttpHandler ->
+fun checkMovement(): Filter = Filter { handler: HttpHandler ->
     { request: Request ->
         val movement = movementDeserialize(request.bodyString())
         if (movement != null) {
@@ -102,5 +102,13 @@ fun checkOccupation(serverModel: ServerModel): Filter = Filter { handler: HttpHa
         } else {
             Response(SIDE_OCCUPIED)
         }
+    }
+}
+
+// Special filter that append http status description to response headers
+fun appendStatus(): Filter = Filter { handler: HttpHandler ->
+    { request: Request ->
+        val response = handler(request)
+        response.header("status", response.status.toString())
     }
 }

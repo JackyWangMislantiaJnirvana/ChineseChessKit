@@ -21,20 +21,25 @@ fun main() {
 
     val server = routes(
         "/play/{side}" bind POST to { request: Request ->
-            checkPlayerSide(serverModel)
-                .then(checkMovement(serverModel))
+            checkPlayerSide()
+                .then(checkMovement())
                 .then(checkRevert(serverModel))
                 .then(checkEndgame(serverModel))
+                // this filter is used for debugging
+                .then(appendStatus())
                 .then(handleMove(serverModel))
                 .invoke(request)
         },
         "/observe" bind GET to { request: Request ->
-            handleObserves(serverModel)
+            appendStatus()
+                .then(handleObserves(serverModel))
                 .invoke(request)
         },
         "/register/{side}" bind POST to { request: Request ->
             checkServerStatus(serverModel)
                 .then(checkOccupation(serverModel))
+                // this filter is used for debugging
+                .then(appendStatus())
                 .then(handleRegistration(serverModel))
                 .invoke(request)
         }

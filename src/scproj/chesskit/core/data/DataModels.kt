@@ -31,7 +31,7 @@ data class Coordinate(
     @Json(name = "position_y") val positionY: Int
 )
 
-data class Registration(
+data class RegisterStatus(
     @Json(name = "red_occupied") val redOccupied: Boolean,
     @Json(name = "black_occupied") val blackOccupied: Boolean
 )
