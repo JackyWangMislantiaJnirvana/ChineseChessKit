@@ -10,7 +10,16 @@ public class Rule {
         this.chessGrid = chessGrid;
         this.piece = piece;
     }
-    public boolean movePieceMove(ChessGridElement piece,int starti,int startj,int endi,int endj){
+
+    public ChessGridElement getPiece() {
+        return piece;
+    }
+
+    public void setPiece(ChessGridElement piece) {
+        this.piece = piece;
+    }
+
+    public boolean movePieceMove(ChessGridElement piece, int starti, int startj, int endi, int endj){
         this.piece=piece;
         this.starti=starti;
         this.startj=startj;
@@ -23,6 +32,8 @@ public class Rule {
         boolean canMove=false;
         ChessGridElement[][] grid = chessGrid.getGrid();
         if(endi<=0||endj<=0||endi>10||endj>9) return false;
+        if(piece==ChessGridElement.EMPTY) return false;
+        if(starti==endi&&startj==endj) return false;
         //红方棋子
         if(piece==ChessGridElement.RED_VEHICLE){ //红方车
             if(starti==endi){

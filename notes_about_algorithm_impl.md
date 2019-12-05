@@ -76,7 +76,7 @@ public static Movement getNextStep(ChessGrid chessGrid, PlayerSide playerSide) {
 
 ## 胜负判断
 
-给定棋盘状态，判断胜负。留空的代码位于`scproj.chesskit.core.chess.EndGameDetect`类。
+给定棋盘状态，判断胜负。留空的代码位于`scproj.chesskit.core.chess.EndGameDetectBasic`类。
 
 把代码装进静态方法`getWinner`
 
