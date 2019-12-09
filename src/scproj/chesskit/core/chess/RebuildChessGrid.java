@@ -7,7 +7,7 @@ import java.util.List;
 
 public class RebuildChessGrid {
     public static ChessGridElement[][] rebuildChessGrid(GameStatus gameStatus) {
-        ChessGridElement[][] grid=RulesKt.DEFAULT_CHESSPLATE;
+        ChessGridElement[][] grid=RulesKt.getDEFAULT_CHESSPLATE();
         List<Movement> moveList=gameStatus.getMovementSequence();
         for(int i=0;i<moveList.size();i++){
             if(moveList.get(i+2).isUndo()){
@@ -26,10 +26,10 @@ public class RebuildChessGrid {
                     grid[starti][startj]=ChessGridElement.EMPTY;
                 }
                 else{
-                    System.out.println("The movement is invalid");
+                    return null;
                 }
             }
         }
-        return new ChessGridElement[10][9];
+        return grid;
     }
 }
