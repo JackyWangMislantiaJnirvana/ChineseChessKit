@@ -24,15 +24,15 @@ private val moshi = Moshi.Builder()
 
 private val gameStatusAdapter = moshi.adapter(GameStatus::class.java)
 private val movementAdapter = moshi.adapter(Movement::class.java)
-private val registrationAdapter = moshi.adapter(Registration::class.java)
+private val registerStatusAdapter = moshi.adapter(RegisterStatus::class.java)
 
 fun serialize(gameStatus: GameStatus): String = gameStatusAdapter.toJson(gameStatus)
 fun serialize(movement: Movement): String = movementAdapter.toJson(movement)
-//fun serialize(registration: Registration): String = registrationAdapter.toJson(registration)
+fun serialize(registerStatus: RegisterStatus): String = registerStatusAdapter.toJson(registerStatus)
 
 fun gameStatusDeserialize(json: String): GameStatus? = gameStatusAdapter.fromJson(json)
 fun movementDeserialize(json: String): Movement? = movementAdapter.fromJson(json)
-//fun registrationDeserialize(json: String): Registration? = registrationAdapter.fromJson(json)
+fun registerStatusDeserialize(json: String): RegisterStatus? = registerStatusAdapter.fromJson(json)
 
 fun playerSideDeserialize(side: String?): PlayerSide? = when(side) {
     "RED" -> PlayerSide.RED

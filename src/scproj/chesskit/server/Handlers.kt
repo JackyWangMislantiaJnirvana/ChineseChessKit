@@ -1,5 +1,6 @@
 package scproj.chesskit.server
 
+import mu.KotlinLogging
 import org.http4k.core.HttpHandler
 import org.http4k.core.Request
 import org.http4k.core.Response
@@ -15,9 +16,12 @@ import scproj.chesskit.core.data.serialize
  * mutable status information when generating a handler.
  */
 
+val logger = KotlinLogging.logger { }
+
 fun handleObserves(serverModel: ServerModel): HttpHandler = { _: Request ->
+    logger.debug { "inside observe handler" }
     when (serverModel.serverStatus) {
-        ServerStatus.WAITING_FOR_PLAYER -> Response(NOT_STARTED)
+        ServerStatus.WAITING_FOR_PLAYER -> Response(NOT_STARTED).body(serverModel.gameRegistry.serializedRegistry)
         ServerStatus.RED_IN_ACTION -> Response(RED_IN_ACTION).body(serialize(serverModel.gameStatus))
         ServerStatus.BLACK_IN_ACTION -> Response(BLACK_IN_ACTION).body(serialize(serverModel.gameStatus))
         ServerStatus.RED_WON -> Response(RED_WON).body(serialize(serverModel.gameStatus))
@@ -36,11 +40,13 @@ fun handleMove(serverModel: ServerModel): HttpHandler = { request: Request ->
 
 fun handleRegistration(serverModel: ServerModel): HttpHandler = { request: Request ->
     val playerSide = playerSideDeserialize(request.path("side"))!!
-    serverModel.gameRegistry.setOccupation(playerSide)
+    serverModel.gameRegistry.setOccupation(playerSide, true)
 
     if (!serverModel.gameRegistry.getTheOther(playerSide)) {
         Response(WAITING_FOR_OPPONENT)
     } else {
+        serverModel.serverStatus = ServerStatus.RED_IN_ACTION
+        logger.info { "paring complete, starting game" }
         Response(PARING_COMPLETE)
     }
 }

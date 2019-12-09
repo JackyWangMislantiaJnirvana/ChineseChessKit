@@ -1,5 +1,6 @@
 package scproj.chesskit.server
 
+/*
 import mu.KotlinLogging
 import org.http4k.routing.bind
 import org.http4k.routing.routes
@@ -12,26 +13,41 @@ import org.http4k.core.Status.Companion.FORBIDDEN
 import org.http4k.core.Status.Companion.OK
 import org.http4k.server.Jetty
 import org.http4k.server.asServer
+import scproj.chesskit.core.chess.ChessGrid
+import scproj.chesskit.core.chess.EndGameDetect
 import scproj.chesskit.core.chess.isMovementValid
 import scproj.chesskit.core.communication.*
 import scproj.chesskit.core.data.*
 
+fun observeHandlerPure(gameStatus: GameStatus, serverStatus: ServerStatus, request: Request): Response =
+    when (serverStatus) {
+        ServerStatus.WAITING_FOR_PLAYER -> Response(NOT_STARTED)
+        ServerStatus.RED_IN_ACTION -> Response(RED_IN_ACTION).body(serialize(gameStatus))
+        ServerStatus.BLACK_IN_ACTION -> Response(BLACK_IN_ACTION).body(serialize(gameStatus))
+        ServerStatus.GAME_OVER -> Response(GAME_OVER).body(serialize(gameStatus))
+    }
+
 fun main() {
     val logger = KotlinLogging.logger {  }
     var gameStatus = GameStatus(listOf<Movement>(), 0)
-    var serverStatus: Status = Status.WAITING_FOR_PLAYER
+    var serverStatus: ServerStatus = ServerStatus.WAITING_FOR_PLAYER
     var registrationStatus = mutableMapOf(
         PlayerSide.BLACK to false,
         PlayerSide.RED to true
     )
 
-    val observeHandler: HttpHandler = {
-        when (serverStatus) {
-            Status.WAITING_FOR_PLAYER -> Response(NOT_STARTED)
-            Status.RED_IN_ACTION -> Response(RED_IN_ACTION).body(serialize(gameStatus))
-            Status.BLACK_IN_ACTION -> Response(BLACK_IN_ACTION).body(serialize(gameStatus))
-            Status.GAME_OVER -> Response(GAME_OVER).body(serialize(gameStatus))
-        }
+//    val observeHandler: HttpHandler = {
+//        when (serverStatus) {
+//            ServerStatus.WAITING_FOR_PLAYER -> Response(NOT_STARTED)
+//            ServerStatus.RED_IN_ACTION -> Response(RED_IN_ACTION).body(serialize(gameStatus))
+//            ServerStatus.BLACK_IN_ACTION -> Response(BLACK_IN_ACTION).body(serialize(gameStatus))
+//            ServerStatus.GAME_OVER -> Response(GAME_OVER).body(serialize(gameStatus))
+//        }
+//    }
+
+
+    val observeHandler: HttpHandler = {request ->
+        observeHandlerPure(gameStatus, serverStatus, request)
     }
 
     val playHandler: HttpHandler = { request: Request ->
@@ -54,6 +70,7 @@ fun main() {
                         serialNumber = gameStatus.serialNumber + 1
                     )
                     // TODO EndGameQ
+                    val winner = EndGameDetect.getWinner(ChessGrid(gameStatus));
 
                     Response(MOVEMENT_SUCCESS)
                         .body(serialize(gameStatus))
@@ -66,7 +83,7 @@ fun main() {
     }
 
     val registerHandler: HttpHandler = {request: Request ->
-        if (serverStatus != Status.GAME_OVER || serverStatus != Status.WAITING_FOR_PLAYER) {
+        if (serverStatus != ServerStatus.GAME_OVER || serverStatus != ServerStatus.WAITING_FOR_PLAYER) {
             val player = playerSideDeserialize(request.path("side"))
             if (player != null) {
                 if (player == PlayerSide.RED && registrationStatus[PlayerSide.RED] == false) {
@@ -74,7 +91,7 @@ fun main() {
                     if (registrationStatus[PlayerSide.BLACK] == false)
                         Response(WAITING_FOR_OPPONENT)
                     else {
-                        serverStatus = Status.RED_IN_ACTION
+                        serverStatus = ServerStatus.RED_IN_ACTION
                         Response(PARING_COMPLETE)
                     }
                 } else if (player == PlayerSide.BLACK && registrationStatus[PlayerSide.BLACK] == false) {
@@ -82,7 +99,7 @@ fun main() {
                     if (registrationStatus[PlayerSide.BLACK] == false)
                         Response(WAITING_FOR_OPPONENT)
                     else {
-                        serverStatus = Status.RED_IN_ACTION
+                        serverStatus = ServerStatus.RED_IN_ACTION
                         Response(PARING_COMPLETE)
                     }
                 } else {
@@ -100,7 +117,7 @@ fun main() {
         "/play/{side}" bind POST to playHandler,
         "/observe" bind observeHandler,
         "/reset" bind GET to {
-            serverStatus = Status.WAITING_FOR_PLAYER
+            serverStatus = ServerStatus.WAITING_FOR_PLAYER
             gameStatus = GameStatus(movementSequence = emptyList(), serialNumber = 0)
             Response(OK)
         },
@@ -108,3 +125,4 @@ fun main() {
     )
     server.asServer(Jetty(9000)).start()
 }
+*/
