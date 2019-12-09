@@ -23,7 +23,7 @@ data class GameStatus(
 }
 
 enum class PlayerSide {
-    RED, BLACK
+    RED, BLACK, Balance, Continue
 }
 
 data class Coordinate(

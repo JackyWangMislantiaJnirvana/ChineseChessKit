@@ -6,6 +6,7 @@ import scproj.chesskit.core.chess.ChessGridElement.*
 
 fun isMovementValid(movement: Movement, gameStatus: GameStatus):Boolean = true
 
+lateinit var DEFAULT_CHESSPLATE: Array<Array<ChessGridElement>>
 val DEFAULT_CHESSPLATE = arrayOf(
     arrayOf(BLACK_VEHICLE,  BLACK_RIDER,    BLACK_MINISTER, BLACK_SERVANT,  BLACK_GENERAL,  BLACK_SERVANT,  BLACK_MINISTER, BLACK_RIDER,    BLACK_VEHICLE ),
     arrayOf(EMPTY,          EMPTY,          EMPTY,          EMPTY,          EMPTY,          EMPTY,          EMPTY,          EMPTY,          EMPTY         ),
