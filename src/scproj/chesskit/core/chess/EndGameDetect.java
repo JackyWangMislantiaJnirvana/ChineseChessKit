@@ -14,7 +14,6 @@ public class EndGameDetect {
             if (grid[click.endi][click.endj] == ChessGridElement.RED_GENERAL) {
                 int GPx = click.endi;             //将的位置x
                 int GPy = click.endj;             //将的位置y
-                //boolean RedCheck=true;
                 boolean t = false;
 
                 for (CanMove reply : listRed) {
