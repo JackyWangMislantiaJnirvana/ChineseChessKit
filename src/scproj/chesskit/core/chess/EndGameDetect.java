@@ -9,7 +9,6 @@ public class EndGameDetect {
         ChessGridElement[][] grid = chessGrid.getGrid();
         List<CanMove> listBlack = CanMoveList.GetBlackCanMove(chessGrid);//获取黑方所有能走的步骤
         List<CanMove> listRed = CanMoveList.GetRedCanMove(chessGrid);     //获取红方所有能走的步骤
-        Rule rule = new Rule(chessGrid, ChessGridElement.EMPTY);
 
         for (CanMove click : listBlack) {
             if (grid[click.endi][click.endj] == ChessGridElement.RED_GENERAL) {
@@ -27,7 +26,7 @@ public class EndGameDetect {
                 if (t) continue;
 
                 t = true;
-                if (rule.movePieceMove(grid,ChessGridElement.RED_GENERAL, GPx, GPy, GPx - 1, GPy)) {
+                if (Rule.movePieceMove(grid,ChessGridElement.RED_GENERAL, GPx, GPy, GPx - 1, GPy)) {
                     for (CanMove reply : listBlack) {
                         if (reply.endi == GPx - 1 && reply.endj == GPy) {
                             t = false;
@@ -38,7 +37,7 @@ public class EndGameDetect {
                 if (t) continue;
 
                 t = true;
-                if (rule.movePieceMove(grid,ChessGridElement.RED_GENERAL, GPx, GPy, GPx + 1, GPy)) {
+                if (Rule.movePieceMove(grid,ChessGridElement.RED_GENERAL, GPx, GPy, GPx + 1, GPy)) {
                     for (CanMove reply : listBlack) {
                         if (reply.endi == GPx + 1 && reply.endj == GPy) {
                             t = false;
@@ -48,7 +47,7 @@ public class EndGameDetect {
                 } else t = false;
                 if (t) continue;
 
-                if (rule.movePieceMove(grid,ChessGridElement.RED_GENERAL, GPx, GPy, GPx, GPy - 1)) {
+                if (Rule.movePieceMove(grid,ChessGridElement.RED_GENERAL, GPx, GPy, GPx, GPy - 1)) {
                     for (CanMove reply : listBlack) {
                         if (reply.endi == GPx && reply.endj == GPy - 1) {
                             t = false;
@@ -58,7 +57,7 @@ public class EndGameDetect {
                 } else t = false;
                 if (t) continue;
 
-                if (rule.movePieceMove(grid,ChessGridElement.RED_GENERAL, GPx, GPy, GPx, GPy + 1)) {
+                if (Rule.movePieceMove(grid,ChessGridElement.RED_GENERAL, GPx, GPy, GPx, GPy + 1)) {
                     for (CanMove reply : listBlack) {
                         if (reply.endi == GPx + 1 && reply.endj == GPy + 1) {
                             t = false;
@@ -193,7 +192,7 @@ public class EndGameDetect {
                 if (Canreply) continue;
 
                 boolean t = true;
-                if (rule.movePieceMove(grid,ChessGridElement.BLACK_GENERAL, GPx, GPy, GPx - 1, GPy)) {
+                if (Rule.movePieceMove(grid,ChessGridElement.BLACK_GENERAL, GPx, GPy, GPx - 1, GPy)) {
                     for (CanMove reply : listRed) {
                         if (reply.endi == GPx - 1 && reply.endj == GPy) {
                             t = false;
@@ -204,7 +203,7 @@ public class EndGameDetect {
                 if (t) continue;
 
                 t = true;
-                if (rule.movePieceMove(grid,ChessGridElement.BLACK_GENERAL, GPx, GPy, GPx + 1, GPy)) {
+                if (Rule.movePieceMove(grid,ChessGridElement.BLACK_GENERAL, GPx, GPy, GPx + 1, GPy)) {
                     for (CanMove reply : listRed) {
                         if (reply.endi == GPx + 1 && reply.endj == GPy) {
                             t = false;
@@ -214,7 +213,7 @@ public class EndGameDetect {
                 } else t = false;
                 if (t) continue;
 
-                if (rule.movePieceMove(grid,ChessGridElement.BLACK_GENERAL, GPx, GPy, GPx, GPy - 1)) {
+                if (Rule.movePieceMove(grid,ChessGridElement.BLACK_GENERAL, GPx, GPy, GPx, GPy - 1)) {
                     for (CanMove reply : listRed) {
                         if (reply.endi == GPx && reply.endj == GPy - 1) {
                             t = false;
@@ -224,7 +223,7 @@ public class EndGameDetect {
                 } else t = false;
                 if (t) continue;
 
-                if (rule.movePieceMove(grid,ChessGridElement.BLACK_GENERAL, GPx, GPy, GPx, GPy + 1)) {
+                if (Rule.movePieceMove(grid,ChessGridElement.BLACK_GENERAL, GPx, GPy, GPx, GPy + 1)) {
                     for (CanMove reply : listRed) {
                         if (reply.endi == GPx + 1 && reply.endj == GPy + 1) {
                             t = false;

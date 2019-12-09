@@ -3,22 +3,6 @@ import scproj.chesskit.client.MainKt;
 import sun.invoke.empty.Empty;
 
 public class Rule {
-    ChessGrid chessGrid=null;
-    ChessGridElement piece=null;
-    int starti,startj,endi,endj;
-    public Rule(ChessGrid chessGrid, ChessGridElement piece) {
-        this.chessGrid = chessGrid;
-        this.piece = piece;
-    }
-
-    public ChessGridElement getPiece() {
-        return piece;
-    }
-
-    public void setPiece(ChessGridElement piece) {
-        this.piece = piece;
-    }
-
     public static boolean movePieceMove(ChessGridElement[][] grid,ChessGridElement piece, int starti, int startj, int endi, int endj){
         int mini=Math.min(starti,endi);
         int minj=Math.min(startj,endj);
