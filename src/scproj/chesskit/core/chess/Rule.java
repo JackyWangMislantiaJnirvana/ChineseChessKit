@@ -1,5 +1,4 @@
 package scproj.chesskit.core.chess;
-//import scproj.chesskit.client.MainKt;
 import sun.invoke.empty.Empty;
 
 public class Rule {
@@ -9,7 +8,7 @@ public class Rule {
         int maxi=Math.max(starti,endi);
         int maxj=Math.max(startj,endj);
         boolean canMove=false;
-        if(endi<0||endj<0||endi>9||endj>8) return false;
+        if(endi<0||endj<0||endi>=10||endj>=9) return false;
         if(piece==ChessGridElement.EMPTY) return false;
         if(starti==endi&&startj==endj) return false;
         //红方棋子
