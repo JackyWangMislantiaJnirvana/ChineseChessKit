@@ -7,11 +7,11 @@ public class CanMoveList {
     public static List<CanMove> GetBlackCanMove(ChessGrid chessGrid){
         List<CanMove> list=new ArrayList<>();
         ChessGridElement[][] grid=chessGrid.getGrid();
-        for(int i=1;i<=5;i++){
-            for(int j=1;j<=9;j++){
-                if(grid[i][j]!=ChessGridElement.EMPTY){
-                    for(int x=1;x<=10;x++){
-                        for(int y=1;y<=9;y++){
+        for(int i=0;i<=9;i++){
+            for(int j=0;j<=8;j++){
+                if(grid[i][j]!=ChessGridElement.EMPTY&&isBlack(grid[i][j])){
+                    for(int x=0;x<=9;x++){
+                        for(int y=0;y<=8;y++){
                             if(Rule.movePieceMove(grid,grid[i][j],i,j,x,y)){
                                 list.add(new CanMove(grid[i][j],i,j,x,y));
                             }
@@ -25,11 +25,11 @@ public class CanMoveList {
     public static List<CanMove> GetRedCanMove(ChessGrid chessGrid){
         List<CanMove> list=new ArrayList<>();
         ChessGridElement[][] grid=chessGrid.getGrid();
-        for(int i=6;i<=10;i++){
-            for(int j=1;j<=9;j++){
-                if(grid[i][j]!=ChessGridElement.EMPTY){
-                    for(int x=1;x<=10;x++){
-                        for(int y=1;y<=9;y++){
+        for(int i=0;i<=9;i++){
+            for(int j=0;j<=8;j++){
+                if(grid[i][j]!=ChessGridElement.EMPTY&&isRed(grid[i][j])){
+                    for(int x=0;x<=9;x++){
+                        for(int y=0;y<=8;y++){
                             if(Rule.movePieceMove(grid,grid[i][j],i,j,x,y)){
                                 list.add(new CanMove(grid[i][j],i,j,x,y));
                             }
@@ -39,5 +39,25 @@ public class CanMoveList {
             }
         }
         return list;
+    }
+    private static boolean isRed(ChessGridElement piece){
+        if(piece==ChessGridElement.RED_GENERAL||
+        piece==ChessGridElement.RED_RIDER||
+        piece==ChessGridElement.RED_CANNON||
+        piece==ChessGridElement.RED_MINISTER||
+        piece==ChessGridElement.RED_SERVANT||
+        piece==ChessGridElement.RED_SOLDIER||
+        piece==ChessGridElement.RED_VEHICLE) return true;
+        else return false;
+    }
+    private static boolean isBlack(ChessGridElement piece){
+        if(piece==ChessGridElement.BLACK_CANNON||
+        piece==ChessGridElement.BLACK_GENERAL||
+        piece==ChessGridElement.BLACK_MINISTER||
+        piece==ChessGridElement.BLACK_RIDER||
+        piece==ChessGridElement.BLACK_SERVANT||
+        piece==ChessGridElement.BLACK_SOLDIER||
+        piece==ChessGridElement.BLACK_VEHICLE)return true;
+        else return false;
     }
 }

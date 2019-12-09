@@ -1,5 +1,5 @@
 package scproj.chesskit.core.chess;
-import scproj.chesskit.client.MainKt;
+//import scproj.chesskit.client.MainKt;
 import sun.invoke.empty.Empty;
 
 public class Rule {
@@ -9,7 +9,7 @@ public class Rule {
         int maxi=Math.max(starti,endi);
         int maxj=Math.max(startj,endj);
         boolean canMove=false;
-        if(endi<=0||endj<=0||endi>10||endj>9) return false;
+        if(endi<0||endj<0||endi>9||endj>8) return false;
         if(piece==ChessGridElement.EMPTY) return false;
         if(starti==endi&&startj==endj) return false;
         //红方棋子
@@ -81,7 +81,7 @@ public class Rule {
         int Centerj=(startj+endj)/2;
         int iMove=Math.abs(endi-starti);
         int jMove=Math.abs(endj-startj);
-        if(iMove==2&&jMove==2&&endi>=6){
+        if(iMove==2&&jMove==2&&endi>=5){
             if(grid[Centeri][Centerj]!=ChessGridElement.EMPTY){
                 canMove=false;
             }
@@ -138,7 +138,7 @@ public class Rule {
     else if(piece==ChessGridElement.RED_SOLDIER){//红方兵
         int iMove=Math.abs(endi-starti);
         int jMove=Math.abs(endj-starti);
-        if(starti>=6){
+        if(starti>=5){
             if(starti-endi==1&&jMove==0){
                 canMove=true;
             }
@@ -146,7 +146,7 @@ public class Rule {
                 canMove=false;
             }
         }
-        else if(starti<=5){
+        else if(starti<=4){
             if(starti-endi==1&&jMove==0){
                 canMove=true;
             }
@@ -160,7 +160,7 @@ public class Rule {
     else if(piece==ChessGridElement.RED_SERVANT){//红方仕
             int iMove=Math.abs(endi-starti);
             int jMove=Math.abs(endj-starti);
-            if(endj>=4&&endj<=6&&endi>=8&&endi<=10&&iMove==1&&jMove==1){
+            if(endj>=3&&endj<=5&&endi>=7&&endi<=9&&iMove==1&&jMove==1){
                 canMove=true;
             }
             else canMove=false;
@@ -168,7 +168,7 @@ public class Rule {
     else if(piece==ChessGridElement.RED_GENERAL){//红方帅
             int iMove=Math.abs(endi-starti);
             int jMove=Math.abs(endj-starti);
-            if(endj>=4&&endj<=6&&endi>=8&&endi<=10) {
+            if(endj>=3&&endj<=5&&endi>=7&&endi<=9) {
                 if ((iMove == 1 && jMove == 0) || (iMove == 0 && jMove == 1)) {
                     canMove = true;
                 } else canMove = false;
@@ -244,7 +244,7 @@ public class Rule {
             int Centerj=(startj+endj)/2;
             int iMove=Math.abs(endi-starti);
             int jMove=Math.abs(endj-startj);
-            if(iMove==2&&jMove==2&&endi<=5){
+            if(iMove==2&&jMove==2&&endi<=4){
                 if(grid[Centeri][Centerj]!=ChessGridElement.EMPTY){
                     canMove=false;
                 }
@@ -301,7 +301,7 @@ public class Rule {
         else if(piece==ChessGridElement.BLACK_SOLDIER){//黑方卒
             int iMove=Math.abs(endi-starti);
             int jMove=Math.abs(endj-starti);
-            if(starti<=5){
+            if(starti<=4){
                 if(endi-starti==1&&jMove==0){
                     canMove=true;
                 }
@@ -309,7 +309,7 @@ public class Rule {
                     canMove=false;
                 }
             }
-            else if(starti>=6){
+            else if(starti>=5){
                 if(endi-starti==1&&jMove==0){
                     canMove=true;
                 }
@@ -323,7 +323,7 @@ public class Rule {
         else if(piece==ChessGridElement.BLACK_SERVANT){//黑方侍
             int iMove=Math.abs(endi-starti);
             int jMove=Math.abs(endj-starti);
-            if(endj>=4&&endj<=6&&endi>=1&&endi<=3&&iMove==1&&jMove==1){
+            if(endj>=3&&endj<=5&&endi>=0&&endi<=2&&iMove==1&&jMove==1){
                 canMove=true;
             }
             else canMove=false;
@@ -331,7 +331,7 @@ public class Rule {
         else if(piece==ChessGridElement.BLACK_GENERAL){//黑方将
             int iMove=Math.abs(endi-starti);
             int jMove=Math.abs(endj-starti);
-            if(endj>=4&&endj<=6&&endi>=1&&endi<=3) {
+            if(endj>=3&&endj<=5&&endi>=0&&endi<=2) {
                 if ((iMove == 1 && jMove == 0) || (iMove == 0 && jMove == 1)) {
                     canMove = true;
                 } else canMove = false;
