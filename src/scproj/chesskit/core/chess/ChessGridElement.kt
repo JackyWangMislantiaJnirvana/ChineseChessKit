@@ -1,6 +1,8 @@
 package scproj.chesskit.core.chess
 
-enum class ChessGridElement {
+import javafx.scene.image.Image
+
+enum class ChessGridElement() {
     EMPTY,      // 空位
 
     // Red
