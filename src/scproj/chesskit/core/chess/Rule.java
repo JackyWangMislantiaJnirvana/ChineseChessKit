@@ -1,6 +1,4 @@
 package scproj.chesskit.core.chess;
-import scproj.chesskit.client.MainKt;
-import sun.invoke.empty.Empty;
 
 public class Rule {
     ChessGrid chessGrid=null;
