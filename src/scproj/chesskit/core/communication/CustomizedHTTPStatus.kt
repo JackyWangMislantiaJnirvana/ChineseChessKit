@@ -15,6 +15,7 @@ val BLACK_IN_ACTION = Status.OK.description("Black in action")
 //val GAME_OVER = Status.OK.description("Game over")
 val RED_WON = Status.OK.description("Red won")
 val BLACK_WON = Status.OK.description("Black won")
+val TIE = Status.OK.description("Tie")
 
 // Game registration
 val PARING_COMPLETE = Status.OK.description("Pairing complete")

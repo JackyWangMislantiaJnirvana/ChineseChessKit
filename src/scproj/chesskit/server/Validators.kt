@@ -70,6 +70,10 @@ fun checkEndgame(serverModel: ServerModel): Filter = Filter { handler: HttpHandl
                     serverModel.serverStatus = ServerStatus.BLACK_WON
                     response.status(BLACK_WON)
                 }
+                PlayerSide.TIE -> {
+                    serverModel.serverStatus = ServerStatus.TIE
+                    response.status(TIE)
+                }
             }
         } else {
             response

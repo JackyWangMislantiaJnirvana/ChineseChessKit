@@ -26,6 +26,7 @@ fun handleObserves(serverModel: ServerModel): HttpHandler = { _: Request ->
         ServerStatus.BLACK_IN_ACTION -> Response(BLACK_IN_ACTION).body(serialize(serverModel.gameStatus))
         ServerStatus.RED_WON -> Response(RED_WON).body(serialize(serverModel.gameStatus))
         ServerStatus.BLACK_WON -> Response(BLACK_WON).body(serialize(serverModel.gameStatus))
+        ServerStatus.TIE -> Response(TIE).body(serialize(serverModel.gameStatus))
     }
 }
 
