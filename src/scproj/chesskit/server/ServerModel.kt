@@ -5,6 +5,7 @@ import scproj.chesskit.core.data.PlayerSide
 import scproj.chesskit.core.data.RegisterStatus
 import scproj.chesskit.core.data.serialize
 import scproj.chesskit.server.ServerStatus.WAITING_FOR_PLAYER
+import java.security.InvalidParameterException
 
 class ServerModel(
     var gameStatus: GameStatus,
@@ -30,12 +31,14 @@ class GameRegistry(isRedOccupied: Boolean = false, isBlackOccupied: Boolean = fa
         when (playerSide) {
             PlayerSide.RED -> registry.blackOccupied
             PlayerSide.BLACK -> registry.redOccupied
+            else -> throw InvalidParameterException("TIE is not a valid player side")
         }
 
     fun checkOccupation(playerSide: PlayerSide): Boolean =
         when (playerSide) {
             PlayerSide.RED -> registry.redOccupied
             PlayerSide.BLACK -> registry.blackOccupied
+            else -> throw InvalidParameterException("TIE is not a valid player side")
         }
 
     fun setOccupation(playerSide: PlayerSide, isOccupied: Boolean) {
@@ -48,6 +51,7 @@ class GameRegistry(isRedOccupied: Boolean = false, isBlackOccupied: Boolean = fa
                 redOccupied = isOccupied,
                 blackOccupied = registry.blackOccupied
             )
+            else -> throw InvalidParameterException("TIE is not a valid player side")
         }
     }
 }

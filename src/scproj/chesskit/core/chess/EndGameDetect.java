@@ -341,6 +341,7 @@ public class EndGameDetect {
                 return PlayerSide.RED;
             }
         }
-        return PlayerSide.Continue;
+//        return PlayerSide.Continue;
+        return null;
     }
 }

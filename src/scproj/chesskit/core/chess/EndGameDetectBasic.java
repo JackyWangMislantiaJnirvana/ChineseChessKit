@@ -26,7 +26,8 @@ public class EndGameDetectBasic {
         }
         if(CheckBlack==1&&CheckRed==0) return PlayerSide.BLACK;         //黑胜
         if(CheckBlack==0&&CheckRed==1) return PlayerSide.RED;           //红胜
-        if(CheckBlack==0&&CheckRed==0) return PlayerSide.Balance;       //和棋
-        return PlayerSide.Continue;                                     //继续
+        if (CheckBlack == 0 && CheckRed == 0) return PlayerSide.TIE;       //和棋
+//        return PlayerSide.Continue;                                     //继续
+        return null;
     }
 }
