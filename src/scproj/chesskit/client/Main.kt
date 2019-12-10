@@ -1,6 +1,11 @@
 package scproj.chesskit.client
 
+import javafx.beans.property.SimpleIntegerProperty
+import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
+import org.http4k.core.Method
+import org.http4k.core.Request
+import scproj.chesskit.client.view.GameUI
 import tornadofx.*
 import kotlin.system.exitProcess
 
@@ -42,13 +47,13 @@ class EntranceUI : View() {
     }
 }
 
-class GameUI : View() {
-    override val root = borderpane {
+//class GameUI : View() {
+//    override val root = borderpane {
         //        center = TODO("WHAT ON EARTH SHOULD WE USE FOR IMAGE GRAPHICS")
 //        bottom =
 //        right =
-    }
-}
+//    }
+//}
 
 class ChooseOfflineGameSideForm : Fragment() {
     override val root = form {
@@ -94,24 +99,50 @@ class CreateOnlineGameForm : Fragment() {
 }
 
 class JoinOnlineServerForm : Fragment() {
+    val address = SimpleStringProperty()
+    val port = SimpleIntegerProperty()
+    val controller: GameController by inject()
+    var addressValid = false
     override val root = form {
         label("Join an online game")
         fieldset {
             field("Address") {
-                textfield()
+                textfield(address)
             }
             field("Port") {
-                textfield()
+                textfield(port)
             }
         }
         hbox(alignment = Pos.BOTTOM_RIGHT) {
-            button("Check")
+            button("Test") {
+                action {
+                    val res =
+                        controller.httpClient(Request(Method.GET, "http://${address.get()}:${port.get()}/observe"))
+                    if (res.status.code == 200) {
+                        text = "Test OK"
+                        addressValid = true
+                    } else {
+                        text = "Test FAIL"
+                        addressValid = false
+                    }
+                }
+            }
         }
         spacer {
             spacing = 5.0
         }
         hbox(spacing = 5.0, alignment = Pos.BOTTOM_RIGHT) {
-            button("OK")
+            button("OK") {
+                action {
+                    if (addressValid) {
+                        controller.serverURL = "http://${address.get()}:${port.get()}/observe"
+                        find<GameUI>().openWindow()!!.setOnCloseRequest {
+                            primaryStage.show()
+                        }
+                        hide()
+                    }
+                }
+            }
             button("Cancel") {
                 action {
                     close()
@@ -119,5 +150,6 @@ class JoinOnlineServerForm : Fragment() {
                 }
             }
         }
+        label("Please press \"Test\" first to check connectivity")
     }
 }

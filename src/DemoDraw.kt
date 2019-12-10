@@ -162,7 +162,7 @@ class ProperImageMovingView : View() {
             setOnMouseClicked { event ->
                 if (selected != null) {
                     println("moving to blank")
-                    selected!!.move(Duration(1000.0), Point2D(event.sceneX - 150, event.sceneY - 150))
+                    selected!!.move(Duration(500.0), Point2D(event.sceneX - 150, event.sceneY - 150))
                     selected = null
                 } else {
                     println("not selected")
