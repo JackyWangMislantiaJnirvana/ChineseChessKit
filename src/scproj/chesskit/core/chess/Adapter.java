@@ -36,8 +36,9 @@ public class Adapter {
         }
         if(Invalid(num,grid)&&t&&LengthOk) {
             //抛出错误
+            return null;
         }
-        return grid;
+        else return grid;
     }
     private static boolean Invalid(int[] num,ChessGridElement[][] grid){
         if(num[0]>2) return true;
