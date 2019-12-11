@@ -5,7 +5,7 @@ import scproj.chesskit.core.data.PlayerSide;
 import java.util.List;
 
 public class EndGameDetect {
-    public static PlayerSide getWinner(ChessGrid chessGrid) {
+    public static PlayerSide getWinner(ChessGrid chessGrid) { //原来的参数：ChessGrid chessGrid
         ChessGridElement[][] grid = chessGrid.getGrid();
         List<CanMove> listBlack = CanMoveList.GetBlackCanMove(chessGrid);//获取黑方所有能走的步骤
         List<CanMove> listRed = CanMoveList.GetRedCanMove(chessGrid);     //获取红方所有能走的步骤
