@@ -8,31 +8,34 @@ public class Adapter {
         int[] num=new int[14];                                          //收集棋子个数
         boolean t=false;                                                //判断是否有楚河汉界
         boolean LengthOk=false;                                          //判断长宽
-        if(picture.length!=10) LengthOk=true;
+        int top=0;
+        if(picture.length!=11) LengthOk=true;
         else for(int i=0;i<picture.length;i++){
             char[] element=picture[i].toCharArray();
             if(element.length!=9) {LengthOk=true;break;}
-            for(int j=0;j<element.length;i++){
-                if(element[j]=='.') grid[i][j]=ChessGridElement.EMPTY;
-                else if(element[j]=='C') {num[0]++;grid[i][j]=ChessGridElement.BLACK_VEHICLE;}
-                else if(element[j]=='H') {num[1]++;grid[i][j]=ChessGridElement.BLACK_RIDER;}
-                else if(element[j]=='E') {num[2]++;grid[i][j]=ChessGridElement.BLACK_MINISTER;}
-                else if(element[j]=='A') {num[3]++;grid[i][j]=ChessGridElement.BLACK_SERVANT;}
-                else if(element[j]=='G') {num[4]++;grid[i][j]=ChessGridElement.BLACK_GENERAL;}
-                else if(element[j]=='N') {num[5]++;grid[i][j]=ChessGridElement.BLACK_CANNON;}
-                else if(element[j]=='S') {num[6]++;grid[i][j]=ChessGridElement.BLACK_SOLDIER;}
-                else if(element[j]=='c') {num[7]++;grid[i][j]=ChessGridElement.RED_VEHICLE;}
-                else if(element[j]=='h') {num[8]++;grid[i][j]=ChessGridElement.RED_RIDER;}
-                else if(element[j]=='e') {num[9]++;grid[i][j]=ChessGridElement.RED_MINISTER;}
-                else if(element[j]=='a') {num[10]++;grid[i][j]=ChessGridElement.RED_SERVANT;}
-                else if(element[j]=='g') {num[11]++;grid[i][j]=ChessGridElement.RED_GENERAL;}
-                else if(element[j]=='n') {num[12]++;grid[i][j]=ChessGridElement.RED_CANNON;}
-                else if(element[j]=='s') {num[13]++;grid[i][j]=ChessGridElement.RED_SOLDIER;}
+            for(int j=0;j<element.length;j++){
+                if(element[j]=='.') grid[top][j]=ChessGridElement.EMPTY;
+                else if(element[j]=='C') {num[0]++;grid[top][j]=ChessGridElement.BLACK_VEHICLE;}
+                else if(element[j]=='H') {num[1]++;grid[top][j]=ChessGridElement.BLACK_RIDER;}
+                else if(element[j]=='E') {num[2]++;grid[top][j]=ChessGridElement.BLACK_MINISTER;}
+                else if(element[j]=='A') {num[3]++;grid[top][j]=ChessGridElement.BLACK_SERVANT;}
+                else if(element[j]=='G') {num[4]++;grid[top][j]=ChessGridElement.BLACK_GENERAL;}
+                else if(element[j]=='N') {num[5]++;grid[top][j]=ChessGridElement.BLACK_CANNON;}
+                else if(element[j]=='S') {num[6]++;grid[top][j]=ChessGridElement.BLACK_SOLDIER;}
+                else if(element[j]=='c') {num[7]++;grid[top][j]=ChessGridElement.RED_VEHICLE;}
+                else if(element[j]=='h') {num[8]++;grid[top][j]=ChessGridElement.RED_RIDER;}
+                else if(element[j]=='e') {num[9]++;grid[top][j]=ChessGridElement.RED_MINISTER;}
+                else if(element[j]=='a') {num[10]++;grid[top][j]=ChessGridElement.RED_SERVANT;}
+                else if(element[j]=='g') {num[11]++;grid[top][j]=ChessGridElement.RED_GENERAL;}
+                else if(element[j]=='n') {num[12]++;grid[top][j]=ChessGridElement.RED_CANNON;}
+                else if(element[j]=='s') {num[13]++;grid[top][j]=ChessGridElement.RED_SOLDIER;}
                 else if(element[j]=='-'){
                     t=true;
+                    top--;
                     break;
                 }
             }
+            top++;
         }
         if(Invalid(num,grid)&&t&&LengthOk) {
             //抛出错误
