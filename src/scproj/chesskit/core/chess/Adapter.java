@@ -1,7 +1,5 @@
 package scproj.chesskit.core.chess;
 
-import org.omg.CORBA.DynAnyPackage.Invalid;
-
 public class Adapter {
     public static ChessGridElement[][] adapter(String[] picture){
         ChessGridElement[][] grid=new ChessGridElement[10][9];
