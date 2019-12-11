@@ -16,6 +16,17 @@ import scproj.chesskit.core.data.playerSideDeserialize
 // Play validators
 // Compose them strictly in order!
 // Pre-request validators
+fun checkIfServerStatusAllowPlay(serverModel: ServerModel): Filter = Filter { handler: HttpHandler ->
+    { request: Request ->
+        if (serverModel.serverStatus == ServerStatus.RED_IN_ACTION
+            || serverModel.serverStatus == ServerStatus.BLACK_IN_ACTION
+        )
+            handler(request)
+        else
+            Response(FORBIDDEN)
+    }
+}
+
 fun checkPlayerSide(): Filter = Filter { handler: HttpHandler ->
     { request: Request ->
         val playerSide = playerSideDeserialize(request.path("side"))
@@ -83,11 +94,12 @@ fun checkEndgame(serverModel: ServerModel): Filter = Filter { handler: HttpHandl
 
 
 // Register validators
-fun checkServerStatus(serverModel: ServerModel): Filter = Filter { handler: HttpHandler ->
+fun checkIfServerStatusAllowRegister(serverModel: ServerModel): Filter = Filter { handler: HttpHandler ->
     { request: Request ->
         if (serverModel.serverStatus == ServerStatus.WAITING_FOR_PLAYER
             || serverModel.serverStatus == ServerStatus.RED_WON
             || serverModel.serverStatus == ServerStatus.BLACK_WON
+            || serverModel.serverStatus == ServerStatus.TIE
         )
             handler(request)
         else

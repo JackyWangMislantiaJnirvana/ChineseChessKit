@@ -22,9 +22,10 @@ fun main() {
     val server = routes(
         "/play/{side}" bind POST to { request: Request ->
             checkPlayerSide()
+                .then(checkIfServerStatusAllowPlay(serverModel))
                 .then(checkMovement())
                 .then(checkRevert(serverModel))
-                .then(checkEndgame(serverModel))
+//                .then(checkEndgame(serverModel))
                 // this filter is used for debugging
                 .then(appendStatus())
                 .then(handleMove(serverModel))
@@ -36,7 +37,7 @@ fun main() {
                 .invoke(request)
         },
         "/register/{side}" bind POST to { request: Request ->
-            checkServerStatus(serverModel)
+            checkIfServerStatusAllowRegister(serverModel)
                 .then(checkOccupation(serverModel))
                 // this filter is used for debugging
                 .then(appendStatus())

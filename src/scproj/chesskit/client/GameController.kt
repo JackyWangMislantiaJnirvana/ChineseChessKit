@@ -26,7 +26,7 @@ class GameController : Controller() {
     }
 
     var playerSide = PlayerSide.RED
-    var serverURL: String = ""
+    var serverURL: String = "http://localhost:9000"  // default value for testing
     var status = Status.IDLE
     var gameStatus: GameStatus = GameStatus(
         emptyList(), 0
@@ -50,7 +50,14 @@ class GameController : Controller() {
 
     fun move(movement: Movement): Boolean {
 //        val lastMovement = gameStatus.movementSequence.last()
+        logger.info { "trying $movement" }
         val chessPiece = chessGrid.grid[movement.movingFrom.positionX][movement.movingFrom.positionY]
+        logger.debug {
+            """
+            chessGrid.grid = ${chessGrid.grid.contentDeepToString()}
+            chessPiece = $chessPiece
+        """.trimIndent()
+        }
         if (!Rule.movePieceMove(
                 chessGrid.grid, chessPiece,
                 movement.movingFrom.positionX, movement.movingFrom.positionY,

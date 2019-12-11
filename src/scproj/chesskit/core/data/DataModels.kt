@@ -19,7 +19,7 @@ data class GameStatus(
     @Json(name = "movement_sequence") val movementSequence: List<Movement>,
     @Json(name = "serial_number") val serialNumber: Long
 ) {
-    operator fun minus(gameStatus: GameStatus): List<Movement> = gameStatus.movementSequence - this.movementSequence
+//    operator fun minus(gameStatus: GameStatus): List<Movement> = gameStatus.movementSequence - this.movementSequence
 }
 
 enum class PlayerSide {

@@ -51,9 +51,12 @@ internal class ValidatorsKtTest {
             ),
             serverStatus = ServerStatus.RED_WON
         )
-        val res1 = checkServerStatus(sm1).then(`handler used to test validators`(sm1)).invoke(Request(Method.POST, ""))
-        val res2 = checkServerStatus(sm2).then(`handler used to test validators`(sm2)).invoke(Request(Method.POST, ""))
-        val res3 = checkServerStatus(sm3).then(`handler used to test validators`(sm3)).invoke(Request(Method.POST, ""))
+        val res1 = checkIfServerStatusAllowRegister(sm1).then(`handler used to test validators`(sm1))
+            .invoke(Request(Method.POST, ""))
+        val res2 = checkIfServerStatusAllowRegister(sm2).then(`handler used to test validators`(sm2))
+            .invoke(Request(Method.POST, ""))
+        val res3 = checkIfServerStatusAllowRegister(sm3).then(`handler used to test validators`(sm3))
+            .invoke(Request(Method.POST, ""))
         println("res1 = $res1")
         println("res2 = $res2")
         println("res3 = $res3")

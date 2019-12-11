@@ -260,6 +260,7 @@ class ChessGridUI : View("My View") {
             piece.imageView.setOnMouseClicked {
                 if (selected == null) {
                     selected = piece
+                    piece.imageView.toFront()
                     piece.imageView.effect = Bloom(0.4)
                 } else {
                     controller.move(
@@ -279,14 +280,22 @@ class ChessGridUI : View("My View") {
                 val observed = controller.observe()
                 val gameStatus = observed.second
                 if (gameStatus != null) {
-                    val newMovements = gameStatus - controller.gameStatus
+                    val newMovements = gameStatus.movementSequence - controller.gameStatus.movementSequence
+                    logger.debug {
+                        """gameStatus = $gameStatus
+                            |controller.gameStatus = ${controller.gameStatus}
+                        """.trimMargin()
+                    }
                     for (mov in newMovements) {
                         val target =
                             chessPieces.filter { it.gridCoordinate == mov.movingFrom }.getOrNull(0)
                         target?.move(mov.movingTo)
+                        // just for fun
+//                        Thread.sleep(1000)
                     }
                     controller.gameStatus = gameStatus
                 }
+                Thread.sleep(1000)
             }
         }
     }
