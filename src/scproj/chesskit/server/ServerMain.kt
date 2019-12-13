@@ -25,7 +25,7 @@ fun main() {
                 .then(checkIfServerStatusAllowPlay(serverModel))
                 .then(checkMovement())
                 .then(checkRevert(serverModel))
-//                .then(checkEndgame(serverModel))
+//                .then(checkEndgame(serverModel)) TODO
                 // this filter is used for debugging
                 .then(appendStatus())
                 .then(handleMove(serverModel))

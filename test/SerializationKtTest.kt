@@ -46,6 +46,10 @@ internal class SerializationKtTest {
                 gameStatusTestingData
             )
         )
+
+        println(
+            registerStatusDeserialize("{\"red_occupied\":false,\"black_occupied\":false}")
+        )
     }
 
     @org.junit.jupiter.api.Test

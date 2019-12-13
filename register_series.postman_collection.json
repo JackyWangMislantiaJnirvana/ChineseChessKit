@@ -1,0 +1,50 @@
+{
+  "info": {
+    "_postman_id": "12ba6dd1-07cf-4275-8509-a56e9a5d55d1",
+    "name": "Register Series",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "register red",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:9000/register/RED",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9000",
+          "path": [
+            "register",
+            "RED"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "register black",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:9000/register/BLACK",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "9000",
+          "path": [
+            "register",
+            "BLACK"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "protocolProfileBehavior": {}
+}

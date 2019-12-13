@@ -277,15 +277,15 @@ class ChessGridUI : View("My View") {
 
         runAsync {
             while (true) {
-                val observed = controller.observe()
+                val observed = controller.observeGame()
                 val gameStatus = observed.second
                 if (gameStatus != null) {
                     val newMovements = gameStatus.movementSequence - controller.gameStatus.movementSequence
-                    logger.debug {
-                        """gameStatus = $gameStatus
-                            |controller.gameStatus = ${controller.gameStatus}
-                        """.trimMargin()
-                    }
+//                    logger.debug {
+//                        """gameStatus = $gameStatus
+//                            |controller.gameStatus = ${controller.gameStatus}
+//                        """.trimMargin()
+//                    }
                     for (mov in newMovements) {
                         val target =
                             chessPieces.filter { it.gridCoordinate == mov.movingFrom }.getOrNull(0)
@@ -295,6 +295,7 @@ class ChessGridUI : View("My View") {
                     }
                     controller.gameStatus = gameStatus
                 }
+                // TODO Consider dialing this time smaller?
                 Thread.sleep(1000)
             }
         }

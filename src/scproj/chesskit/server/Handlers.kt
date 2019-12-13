@@ -36,6 +36,12 @@ fun handleMove(serverModel: ServerModel): HttpHandler = { request: Request ->
         movementSequence = serverModel.gameStatus.movementSequence + movement,
         serialNumber = serverModel.gameStatus.serialNumber + 1
     )
+    if (!movement.isUndo) {
+        when (serverModel.serverStatus) {
+            ServerStatus.BLACK_IN_ACTION -> serverModel.serverStatus = ServerStatus.RED_IN_ACTION
+            ServerStatus.RED_IN_ACTION -> serverModel.serverStatus = ServerStatus.BLACK_IN_ACTION
+        }
+    }
     Response(MOVEMENT_SUCCESS).body(serialize(serverModel.gameStatus))
 }
 

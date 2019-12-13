@@ -3,9 +3,14 @@ package scproj.chesskit.client
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
+import javafx.scene.control.ToggleGroup
+import javafx.scene.paint.Color
 import org.http4k.core.Method
 import org.http4k.core.Request
+import org.http4k.core.Response
 import scproj.chesskit.client.view.GameUI
+import scproj.chesskit.core.data.PlayerSide
+import scproj.chesskit.server.logger
 import tornadofx.*
 import kotlin.system.exitProcess
 
@@ -19,7 +24,7 @@ class EntranceUI : View() {
         button("Offline Game") {
             action {
                 primaryStage.hide()
-                find<ChooseOfflineGameSideForm>().openModal()!!
+                find<ChoosePlayerSideForm>().openModal()!!
                     .setOnCloseRequest { primaryStage.show() }
             }
         }
@@ -47,23 +52,66 @@ class EntranceUI : View() {
     }
 }
 
-//class GameUI : View() {
-//    override val root = borderpane {
-        //        center = TODO("WHAT ON EARTH SHOULD WE USE FOR IMAGE GRAPHICS")
-//        bottom =
-//        right =
-//    }
-//}
-
-class ChooseOfflineGameSideForm : Fragment() {
+class ChoosePlayerSideForm : Fragment() {
+    val controller: GameController by inject()
+    val chosenPlayerSide = SimpleStringProperty()
+    val redStatusString = SimpleStringProperty()
+    val blackStatusString = SimpleStringProperty()
     override val root = form {
         spacing = 10.0
         label("Choose a side to play")
-        combobox<String> {
-            items = listOf("Red side", "Black side").asObservable()
+        label(redStatusString) {
+            textFill = Color.RED
         }
+        label(blackStatusString) {
+            textFill = Color.BLUE
+        }
+
+        val playerSideToggleGroup = ToggleGroup()
+        var selectedPlayer = PlayerSide.RED
+        radiobutton("RED", playerSideToggleGroup) {
+            isSelected = true
+            action {
+                selectedPlayer = PlayerSide.RED
+            }
+        }
+        radiobutton("BLACK", playerSideToggleGroup) {
+            isSelected = false
+            action {
+                selectedPlayer = PlayerSide.BLACK
+            }
+        }
+
+        button("Refresh") {
+            action {
+                val registerStatus = controller.observeRegistration()
+                if (registerStatus != null) {
+                    if (registerStatus.redOccupied) {
+                        redStatusString.value = "Red side is occupied."
+                    } else {
+                        redStatusString.value = "Red side is vacant!"
+                    }
+                    if (registerStatus.blackOccupied) {
+                        blackStatusString.value = "Black side is occupied."
+                    } else {
+                        blackStatusString.value = "Black side is vacant!"
+                    }
+                }
+            }
+        }
+
         hbox(spacing = 5, alignment = Pos.BOTTOM_RIGHT) {
-            button("OK")
+            button("OK") {
+                action {
+                    // TODO check if register is successful
+                    controller.playerSide = selectedPlayer
+                    controller.register()
+                    find<GameUI>().openWindow()!!.setOnCloseRequest {
+                        primaryStage.show()
+                    }
+                    hide()
+                }
+            }
             button("Cancel") {
                 action {
                     close()
@@ -101,6 +149,7 @@ class CreateOnlineGameForm : Fragment() {
 class JoinOnlineServerForm : Fragment() {
     val address = SimpleStringProperty()
     val port = SimpleIntegerProperty()
+    val choosenSide = SimpleStringProperty()
     val controller: GameController by inject()
     var addressValid = false
     override val root = form {
@@ -112,13 +161,23 @@ class JoinOnlineServerForm : Fragment() {
             field("Port") {
                 textfield(port)
             }
+//            field("Choose a side") {
+//                combobox<String>(choosenSide) {
+//                    items = listOf("Red side", "Black side").asObservable()
+//                }
+//            }
         }
         hbox(alignment = Pos.BOTTOM_RIGHT) {
             button("Test") {
                 action {
-                    val res =
-                        controller.httpClient(Request(Method.GET, "http://${address.get()}:${port.get()}/observe"))
-                    if (res.status.code == 200) {
+                    var res: Response? = null
+                    try {
+                        res =
+                            controller.httpClient(Request(Method.GET, "http://${address.get()}:${port.get()}/observe"))
+                    } catch (e: Exception) {
+                        logger.debug { "Failed to reach server\n$e" }
+                    }
+                    if (res?.status?.code == 200) {
                         text = "Test OK"
                         addressValid = true
                     } else {
@@ -135,8 +194,8 @@ class JoinOnlineServerForm : Fragment() {
             button("OK") {
                 action {
                     if (addressValid) {
-                        controller.serverURL = "http://${address.get()}:${port.get()}/observe"
-                        find<GameUI>().openWindow()!!.setOnCloseRequest {
+                        controller.serverURL = "http://${address.get()}:${port.get()}"
+                        find<ChoosePlayerSideForm>().openModal()!!.setOnCloseRequest {
                             primaryStage.show()
                         }
                         hide()

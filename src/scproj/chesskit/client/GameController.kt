@@ -26,26 +26,43 @@ class GameController : Controller() {
     }
 
     var playerSide = PlayerSide.RED
-    var serverURL: String = "http://localhost:9000"  // default value for testing
+    var gameMode = GameMode.ONLINE
+    var serverURL: String = "http://localhost:8000"  // default value for testing
+    val statusSubscribers = ArrayList<(Status) -> Unit>()
     var status = Status.IDLE
+        // Setter with subscriber notification
+        set(value) {
+            field = value
+            statusSubscribers.forEach {
+                it(value)
+            }
+        }
     var gameStatus: GameStatus = GameStatus(
         emptyList(), 0
     )
+        set(value) {
+            logger.debug { "$gameStatus" }
+//            chessGrid = ChessGrid(RebuildChessGrid.rebuildChessGrid(gameStatus))
+            field = value
+        }
     var chessGrid: ChessGrid = ChessGrid(DEFAULT_CHESSPLATE)
 
-    fun observe(): Pair<org.http4k.core.Status, GameStatus?> {
-        val response = httpClient(Request(Method.GET, "$serverURL/observe"))
+    fun observeGame(): Pair<org.http4k.core.Status, GameStatus?> {
+        val response = loggedHttpClient(Request(Method.GET, "$serverURL/observe"))
         val responseStatus = response.status
         val gameStatus = gameStatusDeserialize(response.bodyString())
         return responseStatus to gameStatus
     }
 
-    fun updateGameStatus(newStatus: GameStatus) {
-        gameStatus = newStatus
+    fun observeRegistration(): RegisterStatus? {
+        logger.debug { "serverURL = $serverURL" }
+        val response = loggedHttpClient(Request(Method.GET, "$serverURL/observe"))
+        logger.debug { "register observe = $response" }
+        return registerStatusDeserialize(response.bodyString())
     }
 
-    fun spin() {
-
+    fun updateGameStatus(newStatus: GameStatus) {
+        gameStatus = newStatus
     }
 
     fun move(movement: Movement): Boolean {

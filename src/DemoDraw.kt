@@ -227,3 +227,35 @@ class AsyncController {
     val client = JavaHttpClient()
     fun queryState() = client(Request(Method.GET, "http://localhost:9000/")).bodyString()
 }
+
+class DemoCanvasStatusIndicator : Fragment() {
+    override val root = pane {
+        minWidth = 200.0
+        minHeight = 70.0
+        imageview("red.png") {
+            layoutX = 15.0
+            layoutY = 10.0
+        }
+        imageview("yellow.png") {
+            layoutX = 75.0
+            layoutY = 10.0
+        }
+        imageview("green.png") {
+            layoutX = 135.0
+            layoutY = 10.0
+        }
+        imageview("grey.png") {
+            layoutX = 15.0
+            layoutY = 10.0
+        }.isVisible = false
+        imageview("grey.png") {
+            layoutX = 75.0
+            layoutY = 10.0
+        }.isVisible = false
+        imageview("grey.png") {
+            layoutX = 135.0
+            layoutY = 10.0
+        }.isVisible = true
+
+    }
+}
