@@ -6,7 +6,7 @@ import scproj.chesskit.core.data.PlayerSide;
 import java.util.List;
 
 public class BestMovement {
-    public static Movement BestMovement(ChessGrid chessGrid, PlayerSide playerSide){
+    /*public static Movement BestMovement(ChessGrid chessGrid, PlayerSide playerSide){
         ChessGridElement[][] grid=chessGrid.getGrid();
         List<CanMove> movesRed=CanMoveList.GetRedCanMove(chessGrid);
         List<CanMove> movesBlack=CanMoveList.GetBlackCanMove(chessGrid);
@@ -37,5 +37,5 @@ public class BestMovement {
                 else
             }
         }
-    }
+    }*/
 }

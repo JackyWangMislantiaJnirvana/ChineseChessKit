@@ -5,15 +5,16 @@ import scproj.chesskit.core.data.Movement;
 
 import java.util.List;
 
+//import java.util.List;
+
 public class RebuildChessGrid {
     public static ChessGridElement[][] rebuildChessGrid(GameStatus gameStatus) {
         ChessGridElement[][] grid=RulesKt.getDEFAULT_CHESSPLATE();
         List<Movement> moveList=gameStatus.getMovementSequence();
-        for(int i=0;i<moveList.size();i++){
+        int i=0;
+        while(i<moveList.size()){
             if ( i + 2 <= moveList.size()-1 && moveList.get(i + 2).isUndo()) {
-                moveList.remove(i);
-                moveList.remove(i);
-                moveList.remove(i);
+                i=i+3;
             }
             else{
                 int starti=moveList.get(i).getMovingFrom().getPositionX();
