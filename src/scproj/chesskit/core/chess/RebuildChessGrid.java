@@ -25,6 +25,7 @@ public class RebuildChessGrid {
                 if(Rule.movePieceMove(grid,piece,starti,startj,endi,endj)){
                     grid[endi][endj]=grid[starti][startj];
                     grid[starti][startj]=ChessGridElement.EMPTY;
+                    i++;
                 }
                 else{
                     return null;  //错误抛出
