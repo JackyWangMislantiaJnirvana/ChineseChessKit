@@ -11,11 +11,10 @@ public class RebuildChessGrid {
 
         ChessGridElement[][] grid=RulesKt.getDEFAULT_CHESSPLATE();
         List<Movement> moveList=gameStatus.getMovementSequence();
-        for(int i=0;i<moveList.size();i++){
+        int i=0;
+        while(i<moveList.size()){
             if ( i + 2 <= moveList.size()-1 && moveList.get(i + 2).isUndo()) {
-                moveList.remove(i);
-                moveList.remove(i+1);
-                moveList.remove(i+2);
+                i=i+3;
             }
             else{
                 int starti=moveList.get(i).getMovingFrom().getPositionX();

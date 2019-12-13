@@ -8,9 +8,10 @@ import java.util.List;
 public class BestMovement {
     /*public static Movement BestMovement(ChessGrid chessGrid, PlayerSide playerSide){
         ChessGridElement[][] grid=chessGrid.getGrid();
+        List<CanMove> movesRed=CanMoveList.GetRedCanMove(chessGrid);
+        List<CanMove> movesBlack=CanMoveList.GetBlackCanMove(chessGrid);
         if(playerSide==PlayerSide.RED){
-            List<CanMove> moves=CanMoveList.GetRedCanMove(chessGrid);
-            for(CanMove click:moves){
+            for(CanMove click:movesRed){
                 ChessGridElement piece=grid[click.endi][click.endj];
                 if(piece==ChessGridElement.BLACK_GENERAL){
                     return new Movement(PlayerSide.RED,click.starti,click.startj,click.endi,click.endj,false);
