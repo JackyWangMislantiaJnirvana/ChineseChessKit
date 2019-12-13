@@ -10,7 +10,7 @@ public class RebuildChessGrid {
         ChessGridElement[][] grid=RulesKt.getDEFAULT_CHESSPLATE();
         List<Movement> moveList=gameStatus.getMovementSequence();
         for(int i=0;i<moveList.size();i++){
-            if (moveList.size() >= 3 && moveList.get(i + 2).isUndo()) {
+            if ( i + 2 <= moveList.size()-1 && moveList.get(i + 2).isUndo()) {
                 moveList.remove(i);
                 moveList.remove(i+1);
                 moveList.remove(i+2);
