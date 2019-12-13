@@ -12,8 +12,8 @@ public class RebuildChessGrid {
         for(int i=0;i<moveList.size();i++){
             if ( i + 2 <= moveList.size()-1 && moveList.get(i + 2).isUndo()) {
                 moveList.remove(i);
-                moveList.remove(i+1);
-                moveList.remove(i+2);
+                moveList.remove(i);
+                moveList.remove(i);
             }
             else{
                 int starti=moveList.get(i).getMovingFrom().getPositionX();
@@ -26,7 +26,7 @@ public class RebuildChessGrid {
                     grid[starti][startj]=ChessGridElement.EMPTY;
                 }
                 else{
-                    return null;
+                    return null;  //错误抛出
                 }
             }
         }

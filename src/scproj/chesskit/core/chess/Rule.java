@@ -8,9 +8,18 @@ public class Rule {
         int maxi = Math.max(starti, endi);
         int maxj = Math.max(startj, endj);
         boolean canMove = false;
-        if (endi < 0 || endj < 0 || endi >= 10 || endj >= 9) return false;
-        if (piece == ChessGridElement.EMPTY) return false;
-        if (starti == endi && startj == endj) return false;
+        if (endi < 0 || endj < 0 || endi >= 10 || endj >= 9) return false; //超出边界
+        if (piece == ChessGridElement.EMPTY) return false;      //起始点为空
+        if (starti == endi && startj == endj) return false;     //起始点和最终点相同
+        if (isRed(grid[starti][startj])){                       //自己人，别开枪
+            if(isRed(grid[endi][endj])){
+                return false;
+            }
+        }else {
+            if (isBlack(grid[endi][endj])) {
+                return false;
+            }
+        }
         //红方棋子
         if (piece == ChessGridElement.RED_VEHICLE) { //红方车
             if (starti == endi) {
@@ -308,5 +317,25 @@ public class Rule {
         }
 
     return canMove;
+    }
+    private static boolean isRed(ChessGridElement piece){
+        if(piece==ChessGridElement.RED_GENERAL||
+                piece==ChessGridElement.RED_RIDER||
+                piece==ChessGridElement.RED_CANNON||
+                piece==ChessGridElement.RED_MINISTER||
+                piece==ChessGridElement.RED_SERVANT||
+                piece==ChessGridElement.RED_SOLDIER||
+                piece==ChessGridElement.RED_VEHICLE) return true;
+        else return false;
+    }
+    private static boolean isBlack(ChessGridElement piece){
+        if(piece==ChessGridElement.BLACK_CANNON||
+                piece==ChessGridElement.BLACK_GENERAL||
+                piece==ChessGridElement.BLACK_MINISTER||
+                piece==ChessGridElement.BLACK_RIDER||
+                piece==ChessGridElement.BLACK_SERVANT||
+                piece==ChessGridElement.BLACK_SOLDIER||
+                piece==ChessGridElement.BLACK_VEHICLE)return true;
+        else return false;
     }
 }
