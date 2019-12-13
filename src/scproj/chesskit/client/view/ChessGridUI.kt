@@ -293,7 +293,8 @@ class ChessGridUI : View("My View") {
                         // just for fun
 //                        Thread.sleep(1000)
                     }
-                    controller.gameStatus = gameStatus
+//                    controller.gameStatus = gameStatus
+                    controller.updateGameStatus(gameStatus)
                 }
                 // TODO Consider dialing this time smaller?
                 Thread.sleep(1000)

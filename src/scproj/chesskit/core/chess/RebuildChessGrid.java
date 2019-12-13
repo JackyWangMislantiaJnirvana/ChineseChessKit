@@ -7,6 +7,8 @@ import java.util.List;
 
 public class RebuildChessGrid {
     public static ChessGridElement[][] rebuildChessGrid(GameStatus gameStatus) {
+        System.out.println(gameStatus);
+
         ChessGridElement[][] grid=RulesKt.getDEFAULT_CHESSPLATE();
         List<Movement> moveList=gameStatus.getMovementSequence();
         for(int i=0;i<moveList.size();i++){
@@ -26,6 +28,7 @@ public class RebuildChessGrid {
                     grid[starti][startj]=ChessGridElement.EMPTY;
                 }
                 else{
+                    System.out.println("Returning null");
                     return null;
                 }
             }

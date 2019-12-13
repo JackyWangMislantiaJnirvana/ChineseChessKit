@@ -7,6 +7,7 @@ import org.http4k.core.Method
 import org.http4k.core.Request
 import scproj.chesskit.core.chess.ChessGrid
 import scproj.chesskit.core.chess.DEFAULT_CHESSPLATE
+import scproj.chesskit.core.chess.RebuildChessGrid
 import scproj.chesskit.core.chess.Rule
 import scproj.chesskit.core.communication.MOVEMENT_SUCCESS
 import scproj.chesskit.core.communication.PARING_COMPLETE
@@ -40,11 +41,13 @@ class GameController : Controller() {
     var gameStatus: GameStatus = GameStatus(
         emptyList(), 0
     )
-        set(value) {
-            logger.debug { "$gameStatus" }
-//            chessGrid = ChessGrid(RebuildChessGrid.rebuildChessGrid(gameStatus))
-            field = value
-        }
+    //        set(value) {
+//            logger.debug { "$gameStatus" }
+//            val grid = RebuildChessGrid.rebuildChessGrid(gameStatus)
+//            logger.debug { "$grid" }
+//            chessGrid = ChessGrid(grid)
+//            field = value
+//        }
     var chessGrid: ChessGrid = ChessGrid(DEFAULT_CHESSPLATE)
 
     fun observeGame(): Pair<org.http4k.core.Status, GameStatus?> {
@@ -62,6 +65,10 @@ class GameController : Controller() {
     }
 
     fun updateGameStatus(newStatus: GameStatus) {
+        logger.debug { newStatus }
+        val newGridArray = RebuildChessGrid.rebuildChessGrid(newStatus)
+        logger.debug { newGridArray }
+        chessGrid = ChessGrid(newGridArray)
         gameStatus = newStatus
     }
 
