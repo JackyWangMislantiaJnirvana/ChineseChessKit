@@ -7,20 +7,22 @@ public class EndGameDetectBasic {
         // 根据棋盘状态判断哪一方玩家胜利，返回玩家
         ChessGridElement[][] grid=chessGrid.getGrid();
         int CheckBlack=0;
+        kkk:
         for(int i=0;i<=4;i++){
             for(int j=0;j<=8;j++){
                 if(grid[i][j]==ChessGridElement.BLACK_GENERAL){
                     CheckBlack=1;
-                    break;
+                    break kkk;
                 }
             }
         }
         int CheckRed=0;
+        kkk:
         for(int i=5;i<=9;i++){
             for(int j=0;j<=8;j++){
                 if(grid[i][j]==ChessGridElement.RED_GENERAL){
                     CheckRed=1;
-                    break;
+                    break kkk;
                 }
             }
         }
