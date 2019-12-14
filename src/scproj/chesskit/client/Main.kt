@@ -51,6 +51,9 @@ class EntranceUI : View() {
             minWidth = 150.0
         }
         button("Game Replay") {
+            action {
+                // TODO
+            }
             minWidth = 150.0
         }
         button("Quit") {
@@ -119,7 +122,7 @@ class ChooseOnlinePlayerSideForm : Fragment() {
                     find<GameUI>().openWindow()!!.setOnCloseRequest {
                         primaryStage.show()
                     }
-                    hide()
+                    this@form.hide()
                 }
             }
             button("Cancel") {
@@ -133,6 +136,7 @@ class ChooseOnlinePlayerSideForm : Fragment() {
 }
 
 class CreateOnlineGameForm : Fragment() {
+    val gameController: GameController by inject()
     val port = SimpleIntegerProperty(9000)
     var fileToLoad: File? = null
     val serverThreadController: ServerThreadController by inject()
@@ -151,7 +155,7 @@ class CreateOnlineGameForm : Fragment() {
                     action {
                         fileToLoad = chooseFile(
                             title = "Choosing Game Saves to Load",
-                            filters = arrayOf(FileChooser.ExtensionFilter("JSON Serialized Game Status", "json"))
+                            filters = arrayOf(FileChooser.ExtensionFilter("JSON Serialized Game Status", "*.json"))
                         ).firstOrNull()
                     }
                 }
@@ -159,23 +163,32 @@ class CreateOnlineGameForm : Fragment() {
         }
         hbox(spacing = 5, alignment = Pos.BOTTOM_RIGHT) {
             button("OK") {
-                if (fileToLoad != null) {
-                    val loaded = loadGameStatusFromFile(fileToLoad!!)
-                    if (loaded != null) {
-                        serverThreadController.changeModel(
+                action {
+                    if (fileToLoad != null) {
+                        val loaded = loadGameStatusFromFile(fileToLoad!!)
+                        if (loaded != null) {
+                            serverThreadController.changeModel(
                                 ServerModel(
                                     gameStatus = loaded
                                 )
-                        )
-                    }
-                } else {
-                    serverThreadController.changeModel(
-                        ServerModel(
-                            gameStatus = GameStatus(
-                                emptyList(), 0
+                            )
+                        }
+                    } else {
+                        serverThreadController.changeModel(
+                            ServerModel(
+                                gameStatus = GameStatus(
+                                    emptyList(), 0
+                                )
                             )
                         )
-                    )
+                    }
+
+                    gameController.serverURL = "http://localhost:9000"
+
+                    find<ChooseOnlinePlayerSideForm>().openWindow()!!.setOnCloseRequest {
+                        primaryStage.show()
+                    }
+                    this@form.hide()
                 }
             }
             button("Cancel") {
@@ -240,7 +253,7 @@ class JoinOnlineServerForm : Fragment() {
                         find<ChooseOnlinePlayerSideForm>().openModal()!!.setOnCloseRequest {
                             primaryStage.show()
                         }
-                        hide()
+                        this@form.hide()
                     }
                 }
             }
@@ -252,5 +265,34 @@ class JoinOnlineServerForm : Fragment() {
             }
         }
         label("Please press \"Test\" first to check connectivity")
+    }
+}
+
+class LoadProvidedGameForm : Fragment() {
+    var chessbord: File? = null
+    var moveseq: File? = null
+    override val root = form {
+        field("Choose a chess board file:") {
+            button("Browse") {
+                action {
+                    chessbord =
+                        chooseFile(
+                            "Choose a chessboard",
+                            arrayOf(FileChooser.ExtensionFilter("Chess", "*"))
+                        ).firstOrNull()
+                }
+            }
+        }
+        field("Choose a moveseq file:") {
+            button("Browse") {
+                action {
+                    moveseq =
+                        chooseFile(
+                            "Choose a chessboard",
+                            arrayOf(FileChooser.ExtensionFilter("Chess", "*"))
+                        ).firstOrNull()
+                }
+            }
+        }
     }
 }

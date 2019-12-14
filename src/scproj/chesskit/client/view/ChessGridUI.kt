@@ -1,5 +1,6 @@
 package scproj.chesskit.client.view
 
+import javafx.application.Platform
 import javafx.geometry.Point2D
 import javafx.scene.effect.Bloom
 import javafx.scene.input.MouseButton
@@ -41,14 +42,14 @@ class ChessGridUI : View("My View") {
                             )
                         )
                         logger.info { "Selection released by movement" }
-                        selected!!.imageView.effect = null
+                        selected?.imageView?.effect = null
                         selected = null
                     } else {
                         logger.info { "Not selected" }
                     }
                 } else {
                     logger.info { "Selection released by right-clicking" }
-                    selected!!.imageView.effect = null
+                    selected?.imageView?.effect = null
                     selected = null
                 }
             }
@@ -293,10 +294,12 @@ class ChessGridUI : View("My View") {
                     || status means TIE
                 ) {
                     controller.status = Status.GAME_OVER
-                    when {
-                        status means RED_WON -> controller.statusBarText.value = "Game over, RED won."
-                        status means BLACK_WON -> controller.statusBarText.value = "Game over, BLACK won."
-                        status means TIE -> controller.statusBarText.value = "Game over, TIE."
+                    Platform.runLater {
+                        when {
+                            status means RED_WON -> controller.statusBarText.value = "Game over, RED won."
+                            status means BLACK_WON -> controller.statusBarText.value = "Game over, BLACK won."
+                            status means TIE -> controller.statusBarText.value = "Game over, TIE."
+                        }
                     }
                     break
                 }
@@ -314,7 +317,25 @@ class ChessGridUI : View("My View") {
                     if (newMovements.isNotEmpty()) {
                         for (mov in newMovements) {
                             if (mov.isUndo) {
-
+                                val maskedMovementSequence =
+                                    gameStatus.movementSequence.subList(0, gameStatus.movementSequence.size - 3)
+                                chessPieces.forEach {
+                                    it.imageView.isVisible = true
+                                }
+                                for (m in maskedMovementSequence) {
+                                    val target =
+                                        chessPieces.filter { it.gridCoordinate == m.movingFrom && it.imageView.isVisible }
+                                            .getOrNull(0)
+                                    chessPieces.filter { it.gridCoordinate == m.movingFrom && it.imageView.isVisible }
+                                        .forEach(::println)
+                                    val enemy =
+                                        chessPieces.filter { it.gridCoordinate == m.movingTo && it.imageView.isVisible }
+                                            .getOrNull(0)
+                                    chessPieces.filter { it.gridCoordinate == m.movingTo && it.imageView.isVisible }
+                                        .forEach(::println)
+                                    target?.move(m.movingTo)
+                                    enemy?.imageView?.isVisible = false
+                                }
                             } else {
                                 val target =
                                     chessPieces.filter { it.gridCoordinate == mov.movingFrom && it.imageView.isVisible }
@@ -334,7 +355,6 @@ class ChessGridUI : View("My View") {
                         }
                         controller.updateGameStatus(gameStatus)
                     }
-//                    controller.gameStatus = gameStatus
                 }
                 // TODO Consider dialing this time smaller?
                 Thread.sleep(500)

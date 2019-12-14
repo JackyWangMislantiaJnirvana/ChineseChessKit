@@ -31,7 +31,7 @@ class GameController : Controller() {
 
     var playerSide = PlayerSide.RED
     var gameMode = GameMode.ONLINE
-    var serverURL: String = "http://localhost:8000"  // default value for testing
+    var serverURL: String = "http://localhost:9000"  // default value for testing
     val statusSubscribers = ArrayList<(Status) -> Unit>()
     var status = Status.IDLE
         // Setter with subscriber notification
@@ -108,6 +108,31 @@ class GameController : Controller() {
                 logger.info { "Uploading unsuccessful" }
                 return false
             }
+        }
+    }
+
+    fun revert(): Boolean {
+        val response = httpClient(
+            Request(Method.POST, "$serverURL/play/$playerSide")
+                .body(
+                    serialize(
+                        Movement(
+                            playerSide,
+                            Coordinate(-1, -1),
+                            Coordinate(-1, -1),
+                            isUndo = true
+                        )
+                    )
+                )
+        )
+        return if (response.status means MOVEMENT_SUCCESS) {
+            logger.info { "Revert succeeded" }
+            statusBarText.value = "Revert succeeded"
+            true
+        } else {
+            logger.info { "Revert failed" }
+            statusBarText.value = "Revert failed"
+            false
         }
     }
 

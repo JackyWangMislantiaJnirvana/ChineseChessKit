@@ -82,6 +82,19 @@ class ChessPieceImageViewProxy(val imageView: ImageView) {
 
         return this
     }
+
+    fun relocate(dest: Coordinate): ChessPieceImageViewProxy {
+        val clickedPixel = gridToPixelCoordinate(dest)
+        val restOffsetX = PIECE_WIDTH
+        val restOffsetY = PIECE_HEIGHT
+        val bulkOffsetX = -PIECE_WIDTH / 2.0
+        val bulkOffsetY = -PIECE_HEIGHT / 2.0
+        val translateVector: Point2D =
+            Point2D(clickedPixel.x + restOffsetX + bulkOffsetX, clickedPixel.y + restOffsetY + bulkOffsetY)
+        gridCoordinate = dest
+        imageView.relocate(translateVector.x, translateVector.y)
+        return this
+    }
 }
 
 fun ImageView.getProxy(): ChessPieceImageViewProxy {

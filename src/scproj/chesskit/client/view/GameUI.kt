@@ -1,5 +1,6 @@
 package scproj.chesskit.client.view
 
+import javafx.application.Platform
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.paint.Color
@@ -30,6 +31,9 @@ class GameUI : View("My View") {
                     }
                     button("Revert") {
                         minWidth = 150.0
+                        action {
+                            gameController.revert()
+                        }
                     }
                     button("Exit") {
                         minWidth = 150.0
@@ -113,26 +117,28 @@ class StatusBar(tip: SimpleStringProperty = SimpleStringProperty("Am I Cool?")) 
             backgroundColor += Color.DODGERBLUE
         }
         gameController.statusSubscribers.add { status ->
-            when (status) {
-                Status.ACTION -> {
-                    style {
-                        backgroundColor += Color.DODGERBLUE
+            Platform.runLater {
+                when (status) {
+                    Status.ACTION -> {
+                        style {
+                            backgroundColor += Color.DODGERBLUE
+                        }
+                        tip.value = "Your turn."
                     }
-                    tip.value = "Your turn."
-                }
-                Status.WAITING -> {
-                    style {
-                        backgroundColor += Color.CORAL
+                    Status.WAITING -> {
+                        style {
+                            backgroundColor += Color.CORAL
+                        }
+                        tip.value = "Waiting for your opponent."
                     }
-                    tip.value = "Waiting for your opponent."
-                }
-                Status.GAME_OVER -> {
-                    style {
-                        backgroundColor += Color.BLUEVIOLET
+                    Status.GAME_OVER -> {
+                        style {
+                            backgroundColor += Color.BLUEVIOLET
+                        }
+                        tip.value = "" // TODO
                     }
-                    tip.value = "" // TODO
-                }
-                else -> {
+                    else -> {
+                    }
                 }
             }
         }
