@@ -10,8 +10,8 @@ import org.http4k.core.Method
 import org.http4k.core.Request
 import org.http4k.core.Response
 import scproj.chesskit.client.view.GameUI
+import scproj.chesskit.core.data.GameStatus
 import scproj.chesskit.core.data.PlayerSide
-import scproj.chesskit.server.Server
 import scproj.chesskit.server.ServerModel
 import scproj.chesskit.server.logger
 import tornadofx.*
@@ -143,9 +143,9 @@ class CreateOnlineGameForm : Fragment() {
             field("Server address") {
                 textfield(InetAddress.getLocalHost().hostAddress)
             }
-            field("Port") {
-                textfield(port)
-            }
+//            field("Port") {
+//                textfield(9000)
+//            }
             field("Load from a save (if you want)") {
                 button("Load") {
                     action {
@@ -156,24 +156,26 @@ class CreateOnlineGameForm : Fragment() {
                     }
                 }
             }
-
         }
         hbox(spacing = 5, alignment = Pos.BOTTOM_RIGHT) {
             button("OK") {
                 if (fileToLoad != null) {
                     val loaded = loadGameStatusFromFile(fileToLoad!!)
                     if (loaded != null) {
-                        serverThreadController.changeAndStart(
-                            Server(
+                        serverThreadController.changeModel(
                                 ServerModel(
                                     gameStatus = loaded
-                                ),
-                                port = port.value
-                            )
+                                )
                         )
                     }
                 } else {
-
+                    serverThreadController.changeModel(
+                        ServerModel(
+                            gameStatus = GameStatus(
+                                emptyList(), 0
+                            )
+                        )
+                    )
                 }
             }
             button("Cancel") {
@@ -188,8 +190,8 @@ class CreateOnlineGameForm : Fragment() {
 
 class JoinOnlineServerForm : Fragment() {
     val address = SimpleStringProperty()
-    val port = SimpleIntegerProperty()
-    val choosenSide = SimpleStringProperty()
+    val port = SimpleIntegerProperty(9000)
+    val chosenSide = SimpleStringProperty()
     val controller: GameController by inject()
     var addressValid = false
     override val root = form {
