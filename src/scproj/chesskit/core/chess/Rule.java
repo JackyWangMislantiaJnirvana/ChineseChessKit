@@ -1,5 +1,4 @@
 package scproj.chesskit.core.chess;
-import sun.invoke.empty.Empty;
 
 public class Rule {
     public static boolean movePieceMove(ChessGridElement[][] grid, ChessGridElement piece, int starti, int startj, int endi, int endj) {
@@ -8,7 +7,8 @@ public class Rule {
         int maxi = Math.max(starti, endi);
         int maxj = Math.max(startj, endj);
         boolean canMove = false;
-        if (endi < 0 || endj < 0 || endi >= 10 || endj >= 9) return false; //超出边界
+        if (starti < 0 || startj < 0 || starti >= 10 || startj >= 9 || endi < 0 || endj < 0 || endi >= 10 || endj >= 9)
+            return false; //超出边界
         if (piece == ChessGridElement.EMPTY) return false;      //起始点为空
         if (starti == endi && startj == endj) return false;     //起始点和最终点相同
         if (isRed(grid[starti][startj])){                       //自己人，别开枪
@@ -318,7 +318,8 @@ public class Rule {
 
     return canMove;
     }
-    private static boolean isRed(ChessGridElement piece){
+
+    public static boolean isRed(ChessGridElement piece) {
         if(piece==ChessGridElement.RED_GENERAL||
                 piece==ChessGridElement.RED_RIDER||
                 piece==ChessGridElement.RED_CANNON||
@@ -328,7 +329,8 @@ public class Rule {
                 piece==ChessGridElement.RED_VEHICLE) return true;
         else return false;
     }
-    private static boolean isBlack(ChessGridElement piece){
+
+    public static boolean isBlack(ChessGridElement piece) {
         if(piece==ChessGridElement.BLACK_CANNON||
                 piece==ChessGridElement.BLACK_GENERAL||
                 piece==ChessGridElement.BLACK_MINISTER||
