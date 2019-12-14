@@ -9,7 +9,8 @@ public class EndGameDetect {
         ChessGridElement[][] grid = chessGrid.getGrid();
         List<CanMove> listBlack = CanMoveList.GetBlackCanMove(chessGrid);//获取黑方所有能走的步骤
         List<CanMove> listRed = CanMoveList.GetRedCanMove(chessGrid);     //获取红方所有能走的步骤
-
+        if(listBlack.size()==0) return PlayerSide.RED;
+        if(listRed.size()==0) return PlayerSide.BLACK;
         for (CanMove click : listBlack) {
             if (grid[click.endi][click.endj] == ChessGridElement.RED_GENERAL) {
                 int GPx = click.endi;             //将的位置x
