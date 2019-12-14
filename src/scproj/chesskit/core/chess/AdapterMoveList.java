@@ -7,12 +7,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class AdapterMoveList {
-    public static Adapter2Result AdapterMoveList(String[] args) {
+    public static Adapter2Result AdapterMoveList(String[] args,ChessGridElement[][] grid) {
         List<Movement> moveList = new LinkedList<>();
         List<Adapter2Mistake> mistake=new LinkedList<>();
         List<Movement> wrongList=new LinkedList<>();
         List<Integer> wrongLine=new LinkedList<>();
-        ChessGridElement[][] grid=RulesKt.getDEFAULT_CHESSPLATE();
         int i=0;
         while(args[i].isEmpty()||args[i].charAt(0)<'1'||args[i].charAt(0)>'9'){
             i++;
