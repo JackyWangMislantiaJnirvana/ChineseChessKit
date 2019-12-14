@@ -13,8 +13,6 @@ class AdapterMoveListTest {
         for(int i=0;i<87;i++){
             s[i]=scan.nextLine();
         }
-        Adapter1Result result1 = Adapter.adapter(new String[]);
-        Adapter2Result result2 = AdapterMoveList.AdapterMoveList(s,result1.grid);
         System.out.println();
     }
 }

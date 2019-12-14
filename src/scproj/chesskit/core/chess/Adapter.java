@@ -66,7 +66,7 @@ public class Adapter {
             top++;
         }
 
-        if (t) {
+        if (!t) {
             mistake = Adapter1Mistake.RiverMissing;
             return new Adapter1Result(null, mistake, "RiverMissing");
         }
