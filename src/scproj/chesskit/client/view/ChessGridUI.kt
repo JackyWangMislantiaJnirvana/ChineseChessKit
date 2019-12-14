@@ -313,20 +313,24 @@ class ChessGridUI : View("My View") {
 //                    }
                     if (newMovements.isNotEmpty()) {
                         for (mov in newMovements) {
-                            val target =
+                            if (mov.isUndo) {
+
+                            } else {
+                                val target =
+                                    chessPieces.filter { it.gridCoordinate == mov.movingFrom && it.imageView.isVisible }
+                                        .getOrNull(0)
                                 chessPieces.filter { it.gridCoordinate == mov.movingFrom && it.imageView.isVisible }
-                                    .getOrNull(0)
-                            chessPieces.filter { it.gridCoordinate == mov.movingFrom && it.imageView.isVisible }
-                                .forEach(::println)
-                            val enemy =
+                                    .forEach(::println)
+                                val enemy =
+                                    chessPieces.filter { it.gridCoordinate == mov.movingTo && it.imageView.isVisible }
+                                        .getOrNull(0)
                                 chessPieces.filter { it.gridCoordinate == mov.movingTo && it.imageView.isVisible }
-                                    .getOrNull(0)
-                            chessPieces.filter { it.gridCoordinate == mov.movingTo && it.imageView.isVisible }
-                                .forEach(::println)
-                            target?.move(mov.movingTo)
-                            enemy?.imageView?.isVisible = false
-                            // just for fun
+                                    .forEach(::println)
+                                target?.move(mov.movingTo)
+                                enemy?.imageView?.isVisible = false
+                                // just for fun
 //                        Thread.sleep(1000)
+                            }
                         }
                         controller.updateGameStatus(gameStatus)
                     }

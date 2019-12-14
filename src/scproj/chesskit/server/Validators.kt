@@ -7,7 +7,7 @@ import org.http4k.core.Response
 import org.http4k.core.Status.Companion.FORBIDDEN
 import org.http4k.routing.path
 import scproj.chesskit.core.chess.ChessGrid
-import scproj.chesskit.core.chess.EndGameDetect
+import scproj.chesskit.core.chess.EndGameDetectBasic
 import scproj.chesskit.core.communication.*
 import scproj.chesskit.core.data.PlayerSide
 import scproj.chesskit.core.data.movementDeserialize
@@ -66,11 +66,12 @@ fun checkEndgame(serverModel: ServerModel): Filter = Filter { handler: HttpHandl
     { requset: Request ->
         val response = handler(requset)
 
-        val winner: PlayerSide? = EndGameDetect.getWinner(
+        val winner: PlayerSide? = EndGameDetectBasic.getWinner(
             ChessGrid(
                 serverModel.gameStatus
             )
         )
+        logger.info { "winner = $winner" }
         if (winner != null) {
             when (winner) {
                 PlayerSide.RED -> {

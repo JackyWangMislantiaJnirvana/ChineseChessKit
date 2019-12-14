@@ -12,7 +12,7 @@ import org.http4k.server.asServer
 import scproj.chesskit.core.data.GameStatus
 
 class Server(
-    val serverModel: ServerModel =
+    var serverModel: ServerModel =
         ServerModel(
             GameStatus(
                 movementSequence = emptyList(),
