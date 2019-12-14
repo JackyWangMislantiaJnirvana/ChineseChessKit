@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class AdapterMoveList {
-    public static Adapter2Result AdapterMoveList(String[] args, ChessGridElement[][] grid) {
+    public static Adapter2Result AdapterMoveList(String[] args, ChessGridElement[][] grid, PlayerSide sided) {
         List<Movement> moveList = new LinkedList<>();
         List<Adapter2Mistake> mistake = new LinkedList<>();
         List<Movement> wrongList = new LinkedList<>();
@@ -16,7 +16,9 @@ public class AdapterMoveList {
         while (args[i].isEmpty() || args[i].charAt(0) < '1' || args[i].charAt(0) > '9') {
             i++;
         }
-        int side = 0;
+        int side=0;
+        if(sided==PlayerSide.RED) side=0;
+        else if(sided==PlayerSide.BLACK)side=1;
         while (i < args.length) {
             side = (side + 1) % 2;
             char[] c = args[i].toCharArray();
