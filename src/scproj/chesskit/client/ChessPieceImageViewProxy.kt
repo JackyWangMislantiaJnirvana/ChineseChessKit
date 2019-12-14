@@ -79,6 +79,7 @@ class ChessPieceImageViewProxy(val imageView: ImageView) {
 
         gridCoordinate = dest
         imageView.move(DURATION, translateVector)
+
         return this
     }
 }
