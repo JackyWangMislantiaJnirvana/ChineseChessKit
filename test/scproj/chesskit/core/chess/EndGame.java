@@ -9,6 +9,6 @@ public class EndGame {
         }
         Adapter1Result result=Adapter.adapter(Endgame);
         ChessGrid chessGrid=new ChessGrid(result.grid);
-        System.out.println(EndGameDetectBasic.getWinner(chessGrid));
+        System.out.println(EndGameDetect.getWinner(chessGrid));
     }
 }

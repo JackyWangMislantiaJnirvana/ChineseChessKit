@@ -7,8 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class RebuildChessGrid {
-    public static ChessGridElement[][] rebuildChessGrid(GameStatus gameStatus) {
-        ChessGridElement[][] defaultChessplate = RulesKt.getDEFAULT_CHESSPLATE();
+    public static ChessGridElement[][] rebuildChessGrid(GameStatus gameStatus, ChessGridElement[][] initialGrid) {
+        ChessGridElement[][] defaultChessplate = initialGrid;
         ChessGridElement[][] grid = new ChessGridElement[10][9];
         for (int i = 0; i < defaultChessplate.length; i++) {
             grid[i] = Arrays.copyOf(defaultChessplate[i], 9);
