@@ -3,14 +3,20 @@ package scproj.chesskit.core.chess;
 import scproj.chesskit.core.data.GameStatus;
 import scproj.chesskit.core.data.Movement;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class RebuildChessGrid {
     public static ChessGridElement[][] rebuildChessGrid(GameStatus gameStatus) {
-        System.out.println(gameStatus);
-
-        ChessGridElement[][] grid=RulesKt.getDEFAULT_CHESSPLATE();
+        ChessGridElement[][] defaultChessplate = RulesKt.getDEFAULT_CHESSPLATE();
+        ChessGridElement[][] grid = new ChessGridElement[10][9];
+        for (int i = 0; i < defaultChessplate.length; i++) {
+            grid[i] = Arrays.copyOf(defaultChessplate[i], 9);
+        }
         List<Movement> moveList=gameStatus.getMovementSequence();
+
+        System.out.println("Inside Rebuild: movelist = " + moveList);
+
         int i=0;
         while(i<moveList.size()){
             if ( i + 2 <= moveList.size()-1 && moveList.get(i + 2).isUndo()) {

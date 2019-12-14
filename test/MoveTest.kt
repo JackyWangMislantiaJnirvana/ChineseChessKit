@@ -8,6 +8,7 @@ import tornadofx.pane
 
 fun main() {
     MoveTest().fuck()
+    MoveTest().fuck()
 }
 
 class MoveTest : View() {

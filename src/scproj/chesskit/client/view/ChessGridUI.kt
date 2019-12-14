@@ -6,6 +6,10 @@ import javafx.scene.input.MouseButton
 import mu.KotlinLogging
 import scproj.chesskit.client.*
 import scproj.chesskit.core.chess.ChessGridElement
+import scproj.chesskit.core.communication.BLACK_WON
+import scproj.chesskit.core.communication.RED_WON
+import scproj.chesskit.core.communication.TIE
+import scproj.chesskit.core.communication.means
 import scproj.chesskit.core.data.Coordinate
 import scproj.chesskit.core.data.Movement
 import tornadofx.View
@@ -271,6 +275,9 @@ class ChessGridUI : View("My View") {
                             isUndo = false
                         )
                     )
+                    logger.info { "Selection released by attacking" }
+                    selected!!.imageView.effect = null
+                    selected = null
                 }
             }
         }
@@ -278,26 +285,55 @@ class ChessGridUI : View("My View") {
         runAsync {
             while (true) {
                 val observed = controller.observeGame()
+                val status = observed.first
                 val gameStatus = observed.second
+
+                if (status means RED_WON
+                    || status means BLACK_WON
+                    || status means TIE
+                ) {
+                    controller.status = Status.GAME_OVER
+                    when {
+                        status means RED_WON -> controller.statusBarText.value = "Game over, RED won."
+                        status means BLACK_WON -> controller.statusBarText.value = "Game over, BLACK won."
+                        status means TIE -> controller.statusBarText.value = "Game over, TIE."
+                    }
+                    break
+                }
+
                 if (gameStatus != null) {
-                    val newMovements = gameStatus.movementSequence - controller.gameStatus.movementSequence
+//                    val newMovements = gameStatus.movementSequence - controller.gameStatus.movementSequence
+                    val newMovements = gameStatus.movementSequence.subList(
+                        controller.gameStatus.movementSequence.size, gameStatus.movementSequence.size
+                    )
 //                    logger.debug {
 //                        """gameStatus = $gameStatus
 //                            |controller.gameStatus = ${controller.gameStatus}
 //                        """.trimMargin()
 //                    }
-                    for (mov in newMovements) {
-                        val target =
-                            chessPieces.filter { it.gridCoordinate == mov.movingFrom }.getOrNull(0)
-                        target?.move(mov.movingTo)
-                        // just for fun
+                    if (newMovements.isNotEmpty()) {
+                        for (mov in newMovements) {
+                            val target =
+                                chessPieces.filter { it.gridCoordinate == mov.movingFrom && it.imageView.isVisible }
+                                    .getOrNull(0)
+                            chessPieces.filter { it.gridCoordinate == mov.movingFrom && it.imageView.isVisible }
+                                .forEach(::println)
+                            val enemy =
+                                chessPieces.filter { it.gridCoordinate == mov.movingTo && it.imageView.isVisible }
+                                    .getOrNull(0)
+                            chessPieces.filter { it.gridCoordinate == mov.movingTo && it.imageView.isVisible }
+                                .forEach(::println)
+                            target?.move(mov.movingTo)
+                            enemy?.imageView?.isVisible = false
+                            // just for fun
 //                        Thread.sleep(1000)
+                        }
+                        controller.updateGameStatus(gameStatus)
                     }
 //                    controller.gameStatus = gameStatus
-                    controller.updateGameStatus(gameStatus)
                 }
                 // TODO Consider dialing this time smaller?
-                Thread.sleep(1000)
+                Thread.sleep(500)
             }
         }
     }

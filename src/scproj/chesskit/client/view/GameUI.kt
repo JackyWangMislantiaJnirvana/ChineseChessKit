@@ -13,7 +13,7 @@ class GameUI : View("My View") {
     val chessGridUI: ChessGridUI by inject()
     val statusIndicator: StatusIndicator = StatusIndicator()
     val gameController: GameController by inject()
-    val statusBar: StatusBar = StatusBar(/*TODO*/)
+    val statusBar: StatusBar = StatusBar(gameController.statusBarText)
     override val root = borderpane {
         center = chessGridUI.root
 
@@ -118,16 +118,19 @@ class StatusBar(tip: SimpleStringProperty = SimpleStringProperty("Am I Cool?")) 
                     style {
                         backgroundColor += Color.DODGERBLUE
                     }
+                    tip.value = "Your turn."
                 }
                 Status.WAITING -> {
                     style {
                         backgroundColor += Color.CORAL
                     }
+                    tip.value = "Waiting for your opponent."
                 }
                 Status.GAME_OVER -> {
                     style {
                         backgroundColor += Color.BLUEVIOLET
                     }
+                    tip.value = "" // TODO
                 }
                 else -> {
                 }

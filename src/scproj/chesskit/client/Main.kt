@@ -5,13 +5,18 @@ import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
 import javafx.scene.control.ToggleGroup
 import javafx.scene.paint.Color
+import javafx.stage.FileChooser
 import org.http4k.core.Method
 import org.http4k.core.Request
 import org.http4k.core.Response
 import scproj.chesskit.client.view.GameUI
 import scproj.chesskit.core.data.PlayerSide
+import scproj.chesskit.server.Server
+import scproj.chesskit.server.ServerModel
 import scproj.chesskit.server.logger
 import tornadofx.*
+import java.io.File
+import java.net.InetAddress
 import kotlin.system.exitProcess
 
 class Main : App(EntranceUI::class)
@@ -24,9 +29,10 @@ class EntranceUI : View() {
         button("Offline Game") {
             action {
                 primaryStage.hide()
-                find<ChoosePlayerSideForm>().openModal()!!
+                find<ChooseOnlinePlayerSideForm>().openModal()!!
                     .setOnCloseRequest { primaryStage.show() }
             }
+            minWidth = 150.0
         }
         button("Create Online Game") {
             action {
@@ -34,6 +40,7 @@ class EntranceUI : View() {
                 find<CreateOnlineGameForm>().openModal()!!
                     .setOnCloseRequest { primaryStage.show() }
             }
+            minWidth = 150.0
         }
         button("Join Online Game") {
             action {
@@ -41,20 +48,23 @@ class EntranceUI : View() {
                 find<JoinOnlineServerForm>().openModal()!!
                     .setOnCloseRequest { primaryStage.show() }
             }
+            minWidth = 150.0
         }
         button("Game Replay") {
+            minWidth = 150.0
         }
         button("Quit") {
             action {
                 exitProcess(0)
             }
+            minWidth = 150.0
         }
     }
 }
 
-class ChoosePlayerSideForm : Fragment() {
+class ChooseOnlinePlayerSideForm : Fragment() {
     val controller: GameController by inject()
-    val chosenPlayerSide = SimpleStringProperty()
+    //    val chosenPlayerSide = SimpleStringProperty()
     val redStatusString = SimpleStringProperty()
     val blackStatusString = SimpleStringProperty()
     override val root = form {
@@ -123,19 +133,49 @@ class ChoosePlayerSideForm : Fragment() {
 }
 
 class CreateOnlineGameForm : Fragment() {
+    val port = SimpleIntegerProperty(9000)
+    var fileToLoad: File? = null
+    val serverThreadController: ServerThreadController by inject()
     override val root = form {
         spacing = 10.0
         label("Set up a server locally for others to join")
         fieldset {
             field("Server address") {
-                textfield()
+                textfield(InetAddress.getLocalHost().hostAddress)
             }
             field("Port") {
-                textfield()
+                textfield(port)
             }
+            field("Load from a save (if you want)") {
+                button("Load") {
+                    action {
+                        fileToLoad = chooseFile(
+                            title = "Choosing Game Saves to Load",
+                            filters = arrayOf(FileChooser.ExtensionFilter("JSON Serialized Game Status", "json"))
+                        ).firstOrNull()
+                    }
+                }
+            }
+
         }
         hbox(spacing = 5, alignment = Pos.BOTTOM_RIGHT) {
-            button("OK")
+            button("OK") {
+                if (fileToLoad != null) {
+                    val loaded = loadGameStatusFromFile(fileToLoad!!)
+                    if (loaded != null) {
+                        serverThreadController.changeAndStart(
+                            Server(
+                                ServerModel(
+                                    gameStatus = loaded
+                                ),
+                                port = port.value
+                            )
+                        )
+                    }
+                } else {
+
+                }
+            }
             button("Cancel") {
                 action {
                     close()
@@ -195,7 +235,7 @@ class JoinOnlineServerForm : Fragment() {
                 action {
                     if (addressValid) {
                         controller.serverURL = "http://${address.get()}:${port.get()}"
-                        find<ChoosePlayerSideForm>().openModal()!!.setOnCloseRequest {
+                        find<ChooseOnlinePlayerSideForm>().openModal()!!.setOnCloseRequest {
                             primaryStage.show()
                         }
                         hide()
