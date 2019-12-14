@@ -3,7 +3,7 @@ package scproj.chesskit.core.chess;
 import scproj.chesskit.core.data.PlayerSide;
 
 public class EndGameDetectBasic {
-    public static PlayerSide getWinner(ChessGrid chessGrid) {
+    public static PlayerSide getWinnerBasic(ChessGrid chessGrid) {
         // 根据棋盘状态判断哪一方玩家胜利，返回玩家
         ChessGridElement[][] grid=chessGrid.getGrid();
         int CheckBlack=0;
