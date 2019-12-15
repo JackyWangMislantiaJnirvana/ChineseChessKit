@@ -1,13 +1,20 @@
 package scproj.chesskit.core.chess;
 
+import scproj.chesskit.core.data.GameStatus;
 import scproj.chesskit.core.data.Movement;
 import scproj.chesskit.core.data.PlayerSide;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 public class AdapterMoveList {
-    public static Adapter2Result AdapterMoveList(String[] args, ChessGridElement[][] grid, PlayerSide sided) {
+    public static Adapter2Result AdapterMoveList(String[] args, ChessGridElement[][] initialGrid, PlayerSide sided) {
+        ChessGridElement[][] defaultChessplate = initialGrid;
+        ChessGridElement[][] grid = new ChessGridElement[10][9];
+        for (int i = 0; i < defaultChessplate.length; i++) {
+            grid[i] = Arrays.copyOf(defaultChessplate[i], 9);
+        }
         List<Movement> moveList = new LinkedList<>();
         List<Adapter2Mistake> mistake = new LinkedList<>();
         List<Movement> wrongList = new LinkedList<>();

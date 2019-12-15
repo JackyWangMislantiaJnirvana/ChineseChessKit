@@ -1,5 +1,8 @@
 package scproj.chesskit.core.chess;
 
+import scproj.chesskit.core.data.GameStatus;
+import scproj.chesskit.core.data.PlayerSide;
+
 import java.util.Scanner;
 
 class AdapterMoveListTest {
@@ -10,7 +13,9 @@ class AdapterMoveListTest {
             s[i] = scan.nextLine();
         }
 //        Adapter1Result result1 = Adapter.adapter(new String[]);
-//        Adapter2Result result2 = AdapterMoveList.AdapterMoveList(s, result1.grid);
+        Adapter2Result result2 = AdapterMoveList.AdapterMoveList(s, RulesKt.getDEFAULT_CHESSPLATE(), PlayerSide.RED);
+        GameStatus gameStatus=new GameStatus(result2.moveList,0);
+        ChessGridElement[][] grid=RebuildChessGrid.rebuildChessGrid(gameStatus,RulesKt.getDEFAULT_CHESSPLATE());
         System.out.println();
     }
 }

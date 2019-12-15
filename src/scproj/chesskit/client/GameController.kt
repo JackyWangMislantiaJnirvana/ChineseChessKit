@@ -69,7 +69,7 @@ class GameController : Controller() {
 
     fun updateGameStatus(newStatus: GameStatus) {
 //        logger.debug { newStatus }
-        val newGridArray = RebuildChessGrid.rebuildChessGrid(newStatus)
+        val newGridArray = RebuildChessGrid.rebuildChessGrid(newStatus,null)
 //        logger.debug { newGridArray }
         chessGrid = ChessGrid(newGridArray)
         gameStatus = newStatus
