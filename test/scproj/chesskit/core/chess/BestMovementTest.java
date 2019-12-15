@@ -1,12 +1,15 @@
 package scproj.chesskit.core.chess;
 
+import org.junit.jupiter.api.Test;
 import scproj.chesskit.core.data.Movement;
 import scproj.chesskit.core.data.PlayerSide;
 
 import java.util.Scanner;
 
-class AdapterMoveListTest {
-    public static void main(String[] args) {
+class BestMovementTest {
+
+    @Test
+    void bestMovement() {
         Scanner scan = new Scanner(System.in);
         String[] s = new String[14];
         for (int i = 0; i < 14; i++) {
@@ -15,10 +18,6 @@ class AdapterMoveListTest {
         Adapter1Result result1 = Adapter.adapter(s);
         ChessGrid chessGrid = new ChessGrid(result1.grid);
         Movement move = BestMovement.BestMovement(chessGrid, PlayerSide.BLACK);
-        System.out.println();
-        //Adapter2Result result2 = AdapterMoveList.AdapterMoveList(s, RulesKt.getDEFAULT_CHESSPLATE(), PlayerSide.RED);
-        //GameStatus gameStatus=new GameStatus(result2.moveList,0);
-        //ChessGridElement[][] grid=RebuildChessGrid.rebuildChessGrid(gameStatus,RulesKt.getDEFAULT_CHESSPLATE());
         System.out.println();
     }
 }
