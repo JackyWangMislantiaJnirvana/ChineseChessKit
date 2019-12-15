@@ -28,7 +28,7 @@ public class EndGameDetect extends EndGameDetectBasic {
                 if (t) continue;
 
                 t = true;
-                if (Rule.movePieceMove(grid,ChessGridElement.RED_GENERAL, GPx, GPy, GPx - 1, GPy)) {
+                if (Rule.movePieceMove(grid,ChessGridElement.RED_GENERAL,PlayerSide.RED, GPx, GPy, GPx - 1, GPy)) {
                     for (CanMove reply : listBlack) {
                         if (reply.endi == GPx - 1 && reply.endj == GPy) {
                             t = false;
@@ -39,7 +39,7 @@ public class EndGameDetect extends EndGameDetectBasic {
                 if (t) continue;
 
                 t = true;
-                if (Rule.movePieceMove(grid,ChessGridElement.RED_GENERAL, GPx, GPy, GPx + 1, GPy)) {
+                if (Rule.movePieceMove(grid,ChessGridElement.RED_GENERAL,PlayerSide.RED, GPx, GPy, GPx + 1, GPy)) {
                     for (CanMove reply : listBlack) {
                         if (reply.endi == GPx + 1 && reply.endj == GPy) {
                             t = false;
@@ -49,7 +49,7 @@ public class EndGameDetect extends EndGameDetectBasic {
                 } else t = false;
                 if (t) continue;
 
-                if (Rule.movePieceMove(grid,ChessGridElement.RED_GENERAL, GPx, GPy, GPx, GPy - 1)) {
+                if (Rule.movePieceMove(grid,ChessGridElement.RED_GENERAL,PlayerSide.RED, GPx, GPy, GPx, GPy - 1)) {
                     for (CanMove reply : listBlack) {
                         if (reply.endi == GPx && reply.endj == GPy - 1) {
                             t = false;
@@ -59,7 +59,7 @@ public class EndGameDetect extends EndGameDetectBasic {
                 } else t = false;
                 if (t) continue;
 
-                if (Rule.movePieceMove(grid,ChessGridElement.RED_GENERAL, GPx, GPy, GPx, GPy + 1)) {
+                if (Rule.movePieceMove(grid,ChessGridElement.RED_GENERAL,PlayerSide.RED, GPx, GPy, GPx, GPy + 1)) {
                     for (CanMove reply : listBlack) {
                         if (reply.endi == GPx + 1 && reply.endj == GPy + 1) {
                             t = false;
@@ -194,7 +194,7 @@ public class EndGameDetect extends EndGameDetectBasic {
                 if (Canreply) continue;
 
                 boolean t = true;
-                if (Rule.movePieceMove(grid,ChessGridElement.BLACK_GENERAL, GPx, GPy, GPx - 1, GPy)) {
+                if (Rule.movePieceMove(grid,ChessGridElement.BLACK_GENERAL,PlayerSide.BLACK,GPx, GPy, GPx - 1, GPy)) {
                     for (CanMove reply : listRed) {
                         if (reply.endi == GPx - 1 && reply.endj == GPy) {
                             t = false;
@@ -205,7 +205,7 @@ public class EndGameDetect extends EndGameDetectBasic {
                 if (t) continue;
 
                 t = true;
-                if (Rule.movePieceMove(grid,ChessGridElement.BLACK_GENERAL, GPx, GPy, GPx + 1, GPy)) {
+                if (Rule.movePieceMove(grid,ChessGridElement.BLACK_GENERAL,PlayerSide.BLACK,GPx, GPy, GPx + 1, GPy)) {
                     for (CanMove reply : listRed) {
                         if (reply.endi == GPx + 1 && reply.endj == GPy) {
                             t = false;
@@ -215,7 +215,7 @@ public class EndGameDetect extends EndGameDetectBasic {
                 } else t = false;
                 if (t) continue;
 
-                if (Rule.movePieceMove(grid,ChessGridElement.BLACK_GENERAL, GPx, GPy, GPx, GPy - 1)) {
+                if (Rule.movePieceMove(grid,ChessGridElement.BLACK_GENERAL,PlayerSide.BLACK, GPx, GPy, GPx, GPy - 1)) {
                     for (CanMove reply : listRed) {
                         if (reply.endi == GPx && reply.endj == GPy - 1) {
                             t = false;
@@ -225,7 +225,7 @@ public class EndGameDetect extends EndGameDetectBasic {
                 } else t = false;
                 if (t) continue;
 
-                if (Rule.movePieceMove(grid,ChessGridElement.BLACK_GENERAL, GPx, GPy, GPx, GPy + 1)) {
+                if (Rule.movePieceMove(grid,ChessGridElement.BLACK_GENERAL,PlayerSide.BLACK, GPx, GPy, GPx, GPy + 1)) {
                     for (CanMove reply : listRed) {
                         if (reply.endi == GPx + 1 && reply.endj == GPy + 1) {
                             t = false;

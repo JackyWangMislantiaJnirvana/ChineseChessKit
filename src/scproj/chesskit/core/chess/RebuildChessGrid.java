@@ -2,6 +2,7 @@ package scproj.chesskit.core.chess;
 
 import scproj.chesskit.core.data.GameStatus;
 import scproj.chesskit.core.data.Movement;
+import scproj.chesskit.core.data.PlayerSide;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,8 +26,9 @@ public class RebuildChessGrid {
                 int startj=moveList.get(i).getMovingFrom().getPositionY();
                 int endi=moveList.get(i).getMovingTo().getPositionX();
                 int endj=moveList.get(i).getMovingTo().getPositionY();
+                PlayerSide side=moveList.get(i).getPlayer();
                 ChessGridElement piece=grid[starti][startj];
-                if(Rule.movePieceMove(grid,piece,starti,startj,endi,endj)){
+                if(Rule.movePieceMove(grid,piece,side,starti,startj,endi,endj)){
                     grid[endi][endj]=grid[starti][startj];
                     grid[starti][startj]=ChessGridElement.EMPTY;
                     i++;

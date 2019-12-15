@@ -1,5 +1,7 @@
 package scproj.chesskit.core.chess;
 
+import scproj.chesskit.core.data.PlayerSide;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class CanMoveList {
                 if(grid[i][j]!=ChessGridElement.EMPTY&&isBlack(grid[i][j])){
                     for(int x=0;x<=9;x++){
                         for(int y=0;y<=8;y++){
-                            if(Rule.movePieceMove(grid,grid[i][j],i,j,x,y)){
+                            if(Rule.movePieceMove(grid,grid[i][j], PlayerSide.BLACK,i,j,x,y)){
                                 int temp_Gpx=Gpx;int temp_Gpy=Gpy;
                                 if(grid[i][j]==ChessGridElement.BLACK_GENERAL){
                                     Gpx=x;Gpy=y;
@@ -59,7 +61,7 @@ public class CanMoveList {
                 if(grid[i][j]!=ChessGridElement.EMPTY&&isRed(grid[i][j])){
                     for(int x=0;x<=9;x++){
                         for(int y=0;y<=8;y++){
-                            if(Rule.movePieceMove(grid,grid[i][j],i,j,x,y)){
+                            if(Rule.movePieceMove(grid,grid[i][j],PlayerSide.RED,i,j,x,y)){
                                 int temp_Gpx=Gpx;int temp_Gpy=Gpy;
                                 if(grid[i][j]==ChessGridElement.RED_GENERAL){
                                     Gpx=x;Gpy=y;
