@@ -7,12 +7,10 @@ import javafx.scene.input.MouseButton
 import mu.KotlinLogging
 import scproj.chesskit.client.*
 import scproj.chesskit.core.chess.ChessGridElement
-import scproj.chesskit.core.communication.BLACK_WON
-import scproj.chesskit.core.communication.RED_WON
-import scproj.chesskit.core.communication.TIE
-import scproj.chesskit.core.communication.means
+import scproj.chesskit.core.communication.*
 import scproj.chesskit.core.data.Coordinate
 import scproj.chesskit.core.data.Movement
+import scproj.chesskit.core.data.PlayerSide
 import tornadofx.View
 import tornadofx.imageview
 import tornadofx.pane
@@ -322,6 +320,16 @@ class ChessGridUI : View("My View") {
                         }
                     }
                     break
+                }
+                when {
+                    status means RED_IN_ACTION -> when (controller.playerSide) {
+                        PlayerSide.RED -> controller.status = Status.ACTION
+                        PlayerSide.BLACK -> controller.status = Status.WAITING
+                    }
+                    status means BLACK_IN_ACTION -> when (controller.playerSide) {
+                        PlayerSide.RED -> controller.status = Status.WAITING
+                        PlayerSide.BLACK -> controller.status = Status.ACTION
+                    }
                 }
 
                 if (gameStatus != null) {

@@ -18,3 +18,7 @@ fun getLastMover(lines: List<String>): PlayerSide? {
         else -> null
     }
 }
+
+fun overrideFile(dir: File, filename: String, content: String) {
+    dir.resolve(filename).writeText(content)
+}

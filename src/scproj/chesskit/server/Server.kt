@@ -26,6 +26,7 @@ class Server(
             checkPlayerSide()
                 .then(checkIfServerStatusAllowPlay(serverModel))
                 .then(checkMovement())
+                .then(checkTurn(serverModel))
                 .then(checkRevert(serverModel))
                 .then(checkEndgame(serverModel))
                 // this filter is used for debugging

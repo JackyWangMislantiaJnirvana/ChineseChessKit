@@ -49,6 +49,19 @@ fun checkMovement(): Filter = Filter { handler: HttpHandler ->
     }
 }
 
+fun checkTurn(serverModel: ServerModel): Filter = Filter { handler: HttpHandler ->
+    { request: Request ->
+        val movement = movementDeserialize(request.bodyString())
+        val player = movement!!.player
+        val serverStatus = serverModel.serverStatus
+        when {
+            player == PlayerSide.RED && serverStatus == ServerStatus.RED_IN_ACTION -> handler(request)
+            player == PlayerSide.BLACK && serverStatus == ServerStatus.BLACK_IN_ACTION -> handler(request)
+            else -> Response(INVALID_CHESS_MOVEMENT)
+        }
+    }
+}
+
 fun checkRevert(serverModel: ServerModel): Filter = Filter { handler: HttpHandler ->
     { request: Request ->
         val movement = movementDeserialize(request.bodyString())!!

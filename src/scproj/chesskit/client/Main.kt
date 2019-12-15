@@ -18,6 +18,7 @@ import scproj.chesskit.core.chess.ChessGrid
 import scproj.chesskit.core.data.GameStatus
 import scproj.chesskit.core.data.PlayerSide
 import scproj.chesskit.server.ServerModel
+import scproj.chesskit.server.ServerStatus
 import scproj.chesskit.server.logger
 import tornadofx.*
 import java.io.File
@@ -28,17 +29,28 @@ import kotlin.system.exitProcess
 class Main : App(EntranceUI::class)
 
 class EntranceUI : View() {
+    val botThread = BotClientThreadController()
+    val serverThreadController = ServerThreadController()
     override val root = vbox(spacing = 10, alignment = Pos.CENTER) {
         minHeight = 400.0
         minWidth = 300.0
         label("Chess Kit")
         button("Offline Game") {
             action {
+                serverThreadController.changeModel(
+                    ServerModel(
+                        serverStatus = ServerStatus.RED_IN_ACTION,
+                        isRedOccupied = true,
+                        isBlackOccupied = true
+                    )
+                )
+                botThread.isRunning = true
                 primaryStage.hide()
-                find<ChooseOnlinePlayerSideForm>().openModal()!!
-                    .setOnCloseRequest { primaryStage.show() }
+                find<GameUI>().openWindow()!!.setOnCloseRequest {
+                    primaryStage.show()
+                }
             }
-            minWidth = 150.0
+            minWidth = 200.0
         }
         button("Create Online Game") {
             action {
@@ -46,7 +58,7 @@ class EntranceUI : View() {
                 find<CreateOnlineGameForm>().openModal()!!
                     .setOnCloseRequest { primaryStage.show() }
             }
-            minWidth = 150.0
+            minWidth = 200.0
         }
         button("Join Online Game") {
             action {
@@ -54,13 +66,15 @@ class EntranceUI : View() {
                 find<JoinOnlineServerForm>().openModal()!!
                     .setOnCloseRequest { primaryStage.show() }
             }
-            minWidth = 150.0
+            minWidth = 200.0
         }
-        button("Game Replay") {
+        button("Load From Standard Format") {
             action {
-                // TODO
+                primaryStage.hide()
+                find<LoadProvidedGameForm>().openModal()!!
+                    .setOnCloseRequest { primaryStage.show() }
             }
-            minWidth = 150.0
+            minWidth = 200.0
         }
         button("Quit") {
             action {
@@ -92,12 +106,14 @@ class ChooseOnlinePlayerSideForm : Fragment() {
             isSelected = true
             action {
                 selectedPlayer = PlayerSide.RED
+                controller.playerSide = selectedPlayer
             }
         }
         radiobutton("BLACK", playerSideToggleGroup) {
             isSelected = false
             action {
                 selectedPlayer = PlayerSide.BLACK
+                controller.playerSide = selectedPlayer
             }
         }
 
@@ -118,13 +134,15 @@ class ChooseOnlinePlayerSideForm : Fragment() {
                 }
             }
         }
+        button("Register") {
+            action {
+                controller.register()
+            }
+        }
 
         hbox(spacing = 5, alignment = Pos.BOTTOM_RIGHT) {
             button("OK") {
                 action {
-                    // TODO check if register is successful
-                    controller.playerSide = selectedPlayer
-                    controller.register()
                     find<GameUI>().openWindow()!!.setOnCloseRequest {
                         primaryStage.show()
                     }
@@ -309,10 +327,9 @@ class LoadProvidedGameForm : Fragment() {
             }
             button("Load") {
                 action {
-                    if (chessbord != null && moveseq != null) {
+                    if (chessbord != null /*&& moveseq != null*/) {
                         // Read file -> adapter resolve -> injection -> gameUI
                         val chessboardContent = chessbord!!.readLines()
-                        val moveseqContent = moveseq!!.readLines()
                         val initialPlayerSide = when (getLastMover(chessboardContent)) {
                             PlayerSide.RED -> PlayerSide.BLACK
                             PlayerSide.BLACK -> PlayerSide.RED
@@ -321,32 +338,36 @@ class LoadProvidedGameForm : Fragment() {
                         val adapter1Result = Adapter.adapter(chessboardContent.toTypedArray())
                         if (adapter1Result.mistake == Adapter1Mistake.Valid) {
                             val grid = adapter1Result.grid
-                            val adapter2Result =
-                                AdapterMoveList.AdapterMoveList(
-                                    moveseqContent.toTypedArray(), grid, initialPlayerSide
+                            if (moveseq != null) {
+                                val moveseqContent = moveseq!!.readLines()
+                                val adapter2Result =
+                                    AdapterMoveList.AdapterMoveList(
+                                        moveseqContent.toTypedArray(), grid, initialPlayerSide
+                                    )
+                                for (i in 0 until min(adapter2Result.mistake.size, adapter2Result.wrongLine.size)) {
+                                    errorList.add(
+                                        "${moveseq!!.name}@Line${adapter2Result.wrongLine[i]}: Error: ${adapter2Result.mistake[i]}"
+                                    )
+                                }
+                                println(adapter1Result.grid)
+                                println(adapter2Result.moveList)
+                                loadedChessGrid = ChessGrid(adapter1Result.grid)
+                                loadedGameStatus = GameStatus(
+                                    adapter2Result.moveList,
+                                    serialNumber = adapter2Result.moveList.size.toLong()
                                 )
-                            for (i in 0 until min(adapter2Result.mistake.size, adapter2Result.wrongLine.size)) {
-                                errorList.add(
-                                    "${moveseq!!.name}@Line${adapter2Result.wrongLine[i]}: Error: ${adapter2Result.mistake[i]}"
+                            } else {
+                                loadedChessGrid = ChessGrid(adapter1Result.grid)
+                                loadedGameStatus = GameStatus(
+                                    emptyList(),
+                                    serialNumber = 0
                                 )
                             }
-//                        if (errorList.size != 0) {
-//                            alert(Alert.AlertType.WARNING, "Errors in this moveseq file") {
-//                                listview(errorList.asObservable())
-//                            }
-//                        }
-                            println(adapter1Result.grid)
-                            println(adapter2Result.moveList)
-                            loadedChessGrid = ChessGrid(adapter1Result.grid)
-                            loadedGameStatus = GameStatus(
-                                adapter2Result.moveList,
-                                serialNumber = adapter2Result.moveList.size.toLong()
-                            )
                         } else {
                             alert(
                                 type = Alert.AlertType.ERROR,
                                 header = "Error loading chessboard!",
-                                content = "At file ${chessbord!!.name}: ${adapter1Result.wrongMessage}"
+                                content = "At file ${chessbord!!.name}: ${adapter1Result.mistake}: ${adapter1Result.wrongMessage}"
                             )
                         }
                     }

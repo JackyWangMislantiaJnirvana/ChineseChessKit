@@ -7,8 +7,12 @@ import javafx.scene.paint.Color
 import javafx.scene.text.Font
 import scproj.chesskit.client.GameController
 import scproj.chesskit.client.Status
+import scproj.chesskit.client.overrideFile
 import scproj.chesskit.core.data.PlayerSide
+import scproj.chesskit.core.data.serialize
 import tornadofx.*
+import java.io.File
+import kotlin.system.exitProcess
 
 class GameUI : View("My View") {
     val chessGridUI: ChessGridUI by inject()
@@ -28,6 +32,9 @@ class GameUI : View("My View") {
                 vbox(spacing = 10, alignment = Pos.CENTER) {
                     button("Save Online Game") {
                         minWidth = 150.0
+                        action {
+                            find<SaveOnlineGameForm>().openModal()
+                        }
                     }
                     button("Revert") {
                         minWidth = 150.0
@@ -37,6 +44,9 @@ class GameUI : View("My View") {
                     }
                     button("Exit") {
                         minWidth = 150.0
+                        action {
+                            exitProcess(0)
+                        }
                     }
                     spacer {
                         minHeight = 20.0
@@ -46,6 +56,38 @@ class GameUI : View("My View") {
         }
 
         bottom = statusBar.root
+    }
+}
+
+class SaveOnlineGameForm : Fragment() {
+    val gameController: GameController by inject()
+    val filename = SimpleStringProperty()
+    var chosenDir: File? = null
+    override val root = form {
+        fieldset("Save the online game locally") {
+            label("You can load this file into your own server, later.")
+            button("Browse directory...") {
+                action {
+                    chosenDir = chooseDirectory(
+                        title = "Choose a path to save the game"
+                    )
+                }
+            }
+            field("Filename") {
+                textfield(filename)
+            }
+            button("Save") {
+                action {
+                    if (chosenDir != null) {
+                        overrideFile(
+                            chosenDir!!, filename.value,
+                            serialize(gameController.gameStatus)
+                        )
+                    }
+                    close()
+                }
+            }
+        }
     }
 }
 

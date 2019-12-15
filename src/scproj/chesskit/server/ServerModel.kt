@@ -8,7 +8,10 @@ import scproj.chesskit.server.ServerStatus.WAITING_FOR_PLAYER
 import java.security.InvalidParameterException
 
 class ServerModel(
-    var gameStatus: GameStatus,
+    var gameStatus: GameStatus = GameStatus(
+        movementSequence = emptyList(),
+        serialNumber = 0
+    ),
     var serverStatus: ServerStatus = WAITING_FOR_PLAYER,
     private val initialReverts: Int = 3,
     isRedOccupied: Boolean = false,
