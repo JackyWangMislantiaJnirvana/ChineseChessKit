@@ -45,7 +45,7 @@ public class AdapterMoveList {
                 endi--;
                 startj--;
                 endj--;
-                if (Rule.movePieceMove(grid, grid[starti][startj], starti, startj, endi, endj)) {
+                if (Rule.movePieceMove(grid, grid[starti][startj], PlayerSide.BLACK,starti, startj, endi, endj)) {
                     grid[endi][endj] = grid[starti][startj];
                     grid[starti][startj] = ChessGridElement.EMPTY;
                     moveList.add(new Movement(PlayerSide.BLACK, starti, startj, endi, endj, false));
@@ -60,7 +60,7 @@ public class AdapterMoveList {
                 endj = 9 - endj;
                 starti = 10 - starti;
                 endi = 10 - endi;
-                if (Rule.movePieceMove(grid, grid[starti][startj], starti, startj, endi, endj)) {
+                if (Rule.movePieceMove(grid, grid[starti][startj], PlayerSide.RED,starti, startj, endi, endj)) {
                     grid[endi][endj] = grid[starti][startj];
                     grid[starti][startj] = ChessGridElement.EMPTY;
                     moveList.add(new Movement(PlayerSide.RED, starti, startj, endi, endj, false));

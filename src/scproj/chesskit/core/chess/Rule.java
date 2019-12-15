@@ -1,7 +1,11 @@
 package scproj.chesskit.core.chess;
 
+import scproj.chesskit.core.data.PlayerSide;
+
 public class Rule {
-    public static boolean movePieceMove(ChessGridElement[][] grid, ChessGridElement piece, int starti, int startj, int endi, int endj) {
+    public static boolean movePieceMove(ChessGridElement[][] grid, ChessGridElement piece, PlayerSide side, int starti, int startj, int endi, int endj) {
+        if(side==PlayerSide.RED&&isBlack(piece)) return false;
+        if(side==PlayerSide.BLACK&&isRed(piece)) return false;
         int mini = Math.min(starti, endi);
         int minj = Math.min(startj, endj);
         int maxi = Math.max(starti, endi);
