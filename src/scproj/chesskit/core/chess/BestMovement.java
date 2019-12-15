@@ -56,7 +56,7 @@ public class BestMovement {
                     return new Movement(PlayerSide.BLACK, click.starti, click.startj, click.endi, click.endj, false);
                 }
             }
-            CanMove move = movesRed.get(0);
+            CanMove move = movesBlack.get(0);
             return new Movement(PlayerSide.BLACK, move.starti, move.startj, move.endi, move.endj, false);
         }
         return null;
