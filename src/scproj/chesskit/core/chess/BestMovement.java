@@ -35,6 +35,8 @@ public class BestMovement {
                     return new Movement(PlayerSide.RED,click.starti,click.startj,click.endi,click.endj,false);
                 }
             }
+            CanMove move=movesRed.get(0);
+            return new Movement(PlayerSide.RED,move.starti,move.startj,move.endi,move.endj,false);
         } else if (playerSide == PlayerSide.BLACK) {
             for (CanMove click : movesBlack) {
                 ChessGridElement piece = grid[click.endi][click.endj];
@@ -54,6 +56,8 @@ public class BestMovement {
                     return new Movement(PlayerSide.BLACK, click.starti, click.startj, click.endi, click.endj, false);
                 }
             }
+            CanMove move=movesRed.get(0);
+            return new Movement(PlayerSide.RED,move.starti,move.startj,move.endi,move.endj,false);
         }
         return null;
     }
