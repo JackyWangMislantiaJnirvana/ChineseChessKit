@@ -1,6 +1,7 @@
 import javafx.geometry.Point2D
 import scproj.chesskit.client.ChessPieceImageViewProxy
 import scproj.chesskit.client.pixelToGridCoordinate
+import scproj.chesskit.core.chess.ChessGridElement
 import tornadofx.View
 import tornadofx.imageview
 import tornadofx.pane
@@ -22,6 +23,6 @@ class DemoChessPiece : View("My View") {
         chessPiece = ChessPieceImageViewProxy(imageview("red_general.png") {
             layoutX = -73.0
             layoutY = -73.0
-        })
+        }, ChessGridElement.RED_GENERAL)
     }
 }

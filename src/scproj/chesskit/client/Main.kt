@@ -3,6 +3,7 @@ package scproj.chesskit.client
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.geometry.Pos
+import javafx.scene.control.Alert
 import javafx.scene.control.ToggleGroup
 import javafx.scene.paint.Color
 import javafx.stage.FileChooser
@@ -10,6 +11,10 @@ import org.http4k.core.Method
 import org.http4k.core.Request
 import org.http4k.core.Response
 import scproj.chesskit.client.view.GameUI
+import scproj.chesskit.core.chess.Adapter
+import scproj.chesskit.core.chess.Adapter1Mistake
+import scproj.chesskit.core.chess.AdapterMoveList
+import scproj.chesskit.core.chess.ChessGrid
 import scproj.chesskit.core.data.GameStatus
 import scproj.chesskit.core.data.PlayerSide
 import scproj.chesskit.server.ServerModel
@@ -17,6 +22,7 @@ import scproj.chesskit.server.logger
 import tornadofx.*
 import java.io.File
 import java.net.InetAddress
+import kotlin.math.min
 import kotlin.system.exitProcess
 
 class Main : App(EntranceUI::class)
@@ -271,26 +277,101 @@ class JoinOnlineServerForm : Fragment() {
 class LoadProvidedGameForm : Fragment() {
     var chessbord: File? = null
     var moveseq: File? = null
+    var loaded = false
+    val errorList = ArrayList<String>().asObservable()
+    val serverThread: ServerThreadController by inject()
+    val gameController: GameController by inject()
+    var loadedGameStatus: GameStatus? = null
+    var loadedChessGrid: ChessGrid? = null
     override val root = form {
-        field("Choose a chess board file:") {
-            button("Browse") {
+        fieldset("Choose file to load") {
+            field("Choose a chess board file:") {
+                button("Browse") {
+                    action {
+                        chessbord =
+                            chooseFile(
+                                "Choose a chessboard",
+                                arrayOf(FileChooser.ExtensionFilter("Chessboard", "*.*"))
+                            ).firstOrNull()
+                    }
+                }
+            }
+            field("Choose a moveseq file:") {
+                button("Browse") {
+                    action {
+                        moveseq =
+                            chooseFile(
+                                "Choose a chessboard",
+                                arrayOf(FileChooser.ExtensionFilter("Moveseq", "*.*"))
+                            ).firstOrNull()
+                    }
+                }
+            }
+            button("Load") {
                 action {
-                    chessbord =
-                        chooseFile(
-                            "Choose a chessboard",
-                            arrayOf(FileChooser.ExtensionFilter("Chess", "*"))
-                        ).firstOrNull()
+                    if (chessbord != null && moveseq != null) {
+                        // Read file -> adapter resolve -> injection -> gameUI
+                        val chessboardContent = chessbord!!.readLines()
+                        val moveseqContent = moveseq!!.readLines()
+                        val initialPlayerSide = when (getLastMover(chessboardContent)) {
+                            PlayerSide.RED -> PlayerSide.BLACK
+                            PlayerSide.BLACK -> PlayerSide.RED
+                            else -> PlayerSide.RED
+                        }
+                        val adapter1Result = Adapter.adapter(chessboardContent.toTypedArray())
+                        if (adapter1Result.mistake == Adapter1Mistake.Valid) {
+                            val grid = adapter1Result.grid
+                            val adapter2Result =
+                                AdapterMoveList.AdapterMoveList(
+                                    moveseqContent.toTypedArray(), grid, initialPlayerSide
+                                )
+                            for (i in 0 until min(adapter2Result.mistake.size, adapter2Result.wrongLine.size)) {
+                                errorList.add(
+                                    "${moveseq!!.name}@Line${adapter2Result.wrongLine[i]}: Error: ${adapter2Result.mistake[i]}"
+                                )
+                            }
+//                        if (errorList.size != 0) {
+//                            alert(Alert.AlertType.WARNING, "Errors in this moveseq file") {
+//                                listview(errorList.asObservable())
+//                            }
+//                        }
+                            println(adapter1Result.grid)
+                            println(adapter2Result.moveList)
+                            loadedChessGrid = ChessGrid(adapter1Result.grid)
+                            loadedGameStatus = GameStatus(
+                                adapter2Result.moveList,
+                                serialNumber = adapter2Result.moveList.size.toLong()
+                            )
+                        } else {
+                            alert(
+                                type = Alert.AlertType.ERROR,
+                                header = "Error loading chessboard!",
+                                content = "At file ${chessbord!!.name}: ${adapter1Result.wrongMessage}"
+                            )
+                        }
+                    }
                 }
             }
         }
-        field("Choose a moveseq file:") {
-            button("Browse") {
+
+        fieldset("Error list") {
+            listview(errorList)
+        }
+        fieldset("Start a new game local server on top of this") {
+            button("Start!") {
                 action {
-                    moveseq =
-                        chooseFile(
-                            "Choose a chessboard",
-                            arrayOf(FileChooser.ExtensionFilter("Chess", "*"))
-                        ).firstOrNull()
+                    if (loadedGameStatus != null && loadedChessGrid != null)
+                        serverThread.changeModel(
+                            ServerModel(
+                                gameStatus = loadedGameStatus!!
+                            )
+                        )
+                    gameController.chessGrid = loadedChessGrid!!
+                    find<ChooseOnlinePlayerSideForm>().openWindow()!!.setOnCloseRequest {
+                        primaryStage.show()
+                    }
+                    this@form.hide()
+//                    close()
                 }
             }
         }

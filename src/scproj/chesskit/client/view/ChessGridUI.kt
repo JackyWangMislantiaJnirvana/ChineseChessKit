@@ -16,6 +16,7 @@ import scproj.chesskit.core.data.Movement
 import tornadofx.View
 import tornadofx.imageview
 import tornadofx.pane
+import tornadofx.whenDocked
 
 class ChessGridUI : View("My View") {
     val controller: GameController by inject()
@@ -60,13 +61,13 @@ class ChessGridUI : View("My View") {
             imageview(getIcon(ChessGridElement.RED_GENERAL)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(9, 4))
+            }.getProxy(ChessGridElement.RED_GENERAL)//.move(Coordinate(9, 4))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.BLACK_GENERAL)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(0, 4))
+            }.getProxy(ChessGridElement.BLACK_GENERAL)//.move(Coordinate(0, 4))
         )
 
         // Servants
@@ -74,25 +75,25 @@ class ChessGridUI : View("My View") {
             imageview(getIcon(ChessGridElement.RED_SERVANT)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(9, 3))
+            }.getProxy(ChessGridElement.RED_SERVANT)//.move(Coordinate(9, 3))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.RED_SERVANT)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(9, 5))
+            }.getProxy(ChessGridElement.RED_SERVANT)//.move(Coordinate(9, 5))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.BLACK_SERVANT)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(0, 3))
+            }.getProxy(ChessGridElement.BLACK_SERVANT)//.move(Coordinate(0, 3))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.BLACK_SERVANT)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(0, 5))
+            }.getProxy(ChessGridElement.BLACK_SERVANT)//.move(Coordinate(0, 5))
         )
 
         // Ministers
@@ -100,25 +101,25 @@ class ChessGridUI : View("My View") {
             imageview(getIcon(ChessGridElement.RED_MINISTER)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(9, 2))
+            }.getProxy(ChessGridElement.RED_MINISTER)//.move(Coordinate(9, 2))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.RED_MINISTER)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(9, 6))
+            }.getProxy(ChessGridElement.RED_MINISTER)//.move(Coordinate(9, 6))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.BLACK_MINISTER)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(0, 2))
+            }.getProxy(ChessGridElement.BLACK_MINISTER)//.move(Coordinate(0, 2))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.BLACK_MINISTER)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(0, 6))
+            }.getProxy(ChessGridElement.BLACK_MINISTER)//.move(Coordinate(0, 6))
         )
 
         // Riders
@@ -126,25 +127,25 @@ class ChessGridUI : View("My View") {
             imageview(getIcon(ChessGridElement.RED_RIDER)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(9, 1))
+            }.getProxy(ChessGridElement.RED_RIDER)//.move(Coordinate(9, 1))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.RED_RIDER)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(9, 7))
+            }.getProxy(ChessGridElement.RED_RIDER)//.move(Coordinate(9, 7))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.BLACK_RIDER)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(0, 1))
+            }.getProxy(ChessGridElement.BLACK_RIDER)//.move(Coordinate(0, 1))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.BLACK_RIDER)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(0, 7))
+            }.getProxy(ChessGridElement.BLACK_RIDER)//.move(Coordinate(0, 7))
         )
 
         // Vehicles
@@ -152,25 +153,25 @@ class ChessGridUI : View("My View") {
             imageview(getIcon(ChessGridElement.RED_VEHICLE)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(9, 0))
+            }.getProxy(ChessGridElement.RED_VEHICLE)//.move(Coordinate(9, 0))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.RED_VEHICLE)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(9, 8))
+            }.getProxy(ChessGridElement.RED_VEHICLE)//.move(Coordinate(9, 8))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.BLACK_VEHICLE)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(0, 0))
+            }.getProxy(ChessGridElement.BLACK_VEHICLE)//.move(Coordinate(0, 0))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.BLACK_VEHICLE)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(0, 8))
+            }.getProxy(ChessGridElement.BLACK_VEHICLE)//.move(Coordinate(0, 8))
         )
 
         // Cannons
@@ -178,25 +179,25 @@ class ChessGridUI : View("My View") {
             imageview(getIcon(ChessGridElement.RED_CANNON)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(7, 1))
+            }.getProxy(ChessGridElement.RED_CANNON)//.move(Coordinate(7, 1))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.RED_CANNON)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(7, 7))
+            }.getProxy(ChessGridElement.RED_CANNON)//.move(Coordinate(7, 7))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.BLACK_CANNON)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(2, 1))
+            }.getProxy(ChessGridElement.BLACK_CANNON)//.move(Coordinate(2, 1))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.BLACK_CANNON)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(2, 7))
+            }.getProxy(ChessGridElement.BLACK_CANNON)//.move(Coordinate(2, 7))
         )
 
         // Soldiers
@@ -204,61 +205,61 @@ class ChessGridUI : View("My View") {
             imageview(getIcon(ChessGridElement.RED_SOLDIER)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(6, 0))
+            }.getProxy(ChessGridElement.RED_SOLDIER)//.move(Coordinate(6, 0))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.RED_SOLDIER)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(6, 2))
+            }.getProxy(ChessGridElement.RED_SOLDIER)//.move(Coordinate(6, 2))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.RED_SOLDIER)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(6, 4))
+            }.getProxy(ChessGridElement.RED_SOLDIER)//.move(Coordinate(6, 4))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.RED_SOLDIER)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(6, 6))
+            }.getProxy(ChessGridElement.RED_SOLDIER)//.move(Coordinate(6, 6))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.RED_SOLDIER)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(6, 8))
+            }.getProxy(ChessGridElement.RED_SOLDIER)//.move(Coordinate(6, 8))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.BLACK_SOLDIER)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(3, 0))
+            }.getProxy(ChessGridElement.BLACK_SOLDIER)//.move(Coordinate(3, 0))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.BLACK_SOLDIER)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(3, 2))
+            }.getProxy(ChessGridElement.BLACK_SOLDIER)//.move(Coordinate(3, 0))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.BLACK_SOLDIER)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(3, 4))
+            }.getProxy(ChessGridElement.BLACK_SOLDIER)//.move(Coordinate(3, 4))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.BLACK_SOLDIER)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(3, 6))
+            }.getProxy(ChessGridElement.BLACK_SOLDIER)//.move(Coordinate(3, 6))
         )
         chessPieces.add(
             imageview(getIcon(ChessGridElement.BLACK_SOLDIER)) {
                 layoutX = -PIECE_WIDTH
                 layoutY = -PIECE_HEIGHT
-            }.getProxy().move(Coordinate(3, 8))
+            }.getProxy(ChessGridElement.BLACK_SOLDIER)//.move(Coordinate(3, 8))
         )
 
         chessPieces.forEach { piece ->
@@ -279,6 +280,25 @@ class ChessGridUI : View("My View") {
                     logger.info { "Selection released by attacking" }
                     selected!!.imageView.effect = null
                     selected = null
+                }
+            }
+        }
+
+        whenDocked {
+            logger.debug { "ChessGridUI docked!" }
+            val chessGridMatrix = controller.chessGrid.grid
+            val tempChessList = chessPieces.toMutableList()
+            for (i in chessGridMatrix.indices) {
+                for (j in chessGridMatrix[i].indices) {
+                    if (chessGridMatrix[i][j] != ChessGridElement.EMPTY) {
+                        for (piece in tempChessList) {
+                            if (chessGridMatrix[i][j] == piece.pieceType) {
+                                piece.move(Coordinate(i, j))
+                                tempChessList.remove(piece)
+                                break
+                            }
+                        }
+                    }
                 }
             }
         }

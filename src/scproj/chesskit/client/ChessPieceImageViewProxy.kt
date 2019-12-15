@@ -3,6 +3,7 @@ package scproj.chesskit.client
 import javafx.geometry.Point2D
 import javafx.scene.image.ImageView
 import javafx.util.Duration
+import scproj.chesskit.core.chess.ChessGridElement
 import scproj.chesskit.core.data.Coordinate
 import tornadofx.move
 
@@ -58,7 +59,7 @@ fun pixelToGridCoordinate(point: Point2D): Coordinate {
     return Coordinate(coordinateX, coordinateY)
 }
 
-class ChessPieceImageViewProxy(val imageView: ImageView) {
+class ChessPieceImageViewProxy(val imageView: ImageView, val pieceType: ChessGridElement) {
     // Position (-1, -1) is where these image rest when game is not started
     val REST_POSITION = Coordinate(-1, -1)
     val DURATION = Duration(1000.0)
@@ -97,6 +98,6 @@ class ChessPieceImageViewProxy(val imageView: ImageView) {
     }
 }
 
-fun ImageView.getProxy(): ChessPieceImageViewProxy {
-    return ChessPieceImageViewProxy(this)
+fun ImageView.getProxy(type: ChessGridElement): ChessPieceImageViewProxy {
+    return ChessPieceImageViewProxy(this, type)
 }
