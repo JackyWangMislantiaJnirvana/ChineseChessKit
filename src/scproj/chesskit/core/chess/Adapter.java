@@ -1,15 +1,34 @@
 package scproj.chesskit.core.chess;
 
 public class Adapter {
-    public static Adapter1Result adapter(String[] picture) {
+    public static Adapter1Result adapter(String[] args) {
+        int top=0;int n=0;
+        String[] picture=new String[11];
+        while(top<args.length) {
+            if(args[top].isEmpty()||args[top].charAt(0)=='#'||args[top].charAt(0)=='@') {
+                top++;
+            }
+            else{
+                char[] c=args[top].toCharArray();
+                picture[n]="";
+                for(char ch:c){
+                    if(ch=='#'||ch==' ') break;
+                    else {
+                        picture[n] = picture[n] + ch;
+                    }
+                }
+                n++;top++;
+            }
+        }
+
         ChessGridElement[][] grid = new ChessGridElement[10][9];
         Adapter1Mistake mistake = Adapter1Mistake.Valid;
         String wrongMessage = null;
         int[] num = new int[14];                                          //收集棋子个数
         boolean t = false;                                                //判断是否有楚河汉界
         boolean LengthOk = false;                                          //判断长宽
-        int top = 0;
-        if (picture.length != 11) return new Adapter1Result(null, Adapter1Mistake.InvalidDimension, "InvalidDimension");
+        top = 0;
+        if (n != 11) return new Adapter1Result(null, Adapter1Mistake.InvalidDimension, "InvalidDimension");
         else for (int i = 0; i < picture.length; i++) {
             char[] element = picture[i].toCharArray();
             if (element.length != 9) return new Adapter1Result(null, Adapter1Mistake.SpaceMissing, "SpaceMissing");
