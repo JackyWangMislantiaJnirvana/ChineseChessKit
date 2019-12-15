@@ -15,8 +15,6 @@ public class RebuildChessGrid {
         }
         List<Movement> moveList=gameStatus.getMovementSequence();
 
-        System.out.println("Inside Rebuild: movelist = " + moveList);
-
         int i=0;
         while(i<moveList.size()){
             if ( i + 2 <= moveList.size()-1 && moveList.get(i + 2).isUndo()) {
@@ -34,7 +32,6 @@ public class RebuildChessGrid {
                     i++;
                 }
                 else{
-                    System.out.println("Returning null");
                     return null;
                 }
             }
