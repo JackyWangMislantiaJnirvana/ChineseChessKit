@@ -11,19 +11,25 @@ public class BestMovement {
         List<CanMove> movesRed=CanMoveList.GetRedCanMove(chessGrid);
         List<CanMove> movesBlack=CanMoveList.GetBlackCanMove(chessGrid);
         if(playerSide==PlayerSide.RED){
-            CanMove moveRed=new CanMove(ChessGridElement.EMPTY,0,0,0,0);
+            CanMove moveRed=new CanMove(ChessGridElement.EMPTY,-1,-1,-1,-1);
+            ChessGridElement piece2;
             for(CanMove click:movesRed){
                 ChessGridElement piece=grid[click.endi][click.endj];
-                if(getScore(moveRed.entry)<=getScore(piece)){
+                if(moveRed.endi<0||moveRed.endj<0||moveRed.startj<0||moveRed.starti<0) piece2=ChessGridElement.EMPTY;
+                else piece2=grid[moveRed.endi][moveRed.endj];
+                if(getScore(piece2)<=getScore(piece)){
                     moveRed=click;
                 }
             }
             return new Movement(PlayerSide.RED, moveRed.starti, moveRed.startj, moveRed.endi, moveRed.endj, false);
         } else if (playerSide == PlayerSide.BLACK) {
-            CanMove moveBlack=new CanMove(ChessGridElement.EMPTY,0,0,0,0);
+            CanMove moveBlack=new CanMove(ChessGridElement.EMPTY,-1,-1,-1,-1);
+            ChessGridElement piece2;
             for (CanMove click : movesBlack) {
                 ChessGridElement piece = grid[click.endi][click.endj];
-                if (getScore(moveBlack.entry) <= getScore(piece)) {
+                if(moveBlack.endi<0||moveBlack.endj<0||moveBlack.startj<0||moveBlack.starti<0) piece2=ChessGridElement.EMPTY;
+                else piece2=grid[moveBlack.endi][moveBlack.endj];
+                if (getScore(piece2) <= getScore(piece)) {
                     moveBlack = click;
                 }
             }
