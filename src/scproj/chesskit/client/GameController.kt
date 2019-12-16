@@ -87,6 +87,7 @@ class GameController : Controller() {
         }
         if (!Rule.movePieceMove(
                 chessGrid.grid, chessPiece,
+                playerSide,
                 movement.movingFrom.positionX, movement.movingFrom.positionY,
                 movement.movingTo.positionX, movement.movingTo.positionY
             )
