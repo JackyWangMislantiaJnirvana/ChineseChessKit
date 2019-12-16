@@ -11,54 +11,41 @@ public class BestMovement {
         List<CanMove> movesRed=CanMoveList.GetRedCanMove(chessGrid);
         List<CanMove> movesBlack=CanMoveList.GetBlackCanMove(chessGrid);
         if(playerSide==PlayerSide.RED){
+            CanMove moveRed=new CanMove(ChessGridElement.EMPTY,0,0,0,0);
             for(CanMove click:movesRed){
                 ChessGridElement piece=grid[click.endi][click.endj];
-                if(piece==ChessGridElement.BLACK_GENERAL){
-                    return new Movement(PlayerSide.RED,click.starti,click.startj,click.endi,click.endj,false);
-                }
-                else if(piece==ChessGridElement.BLACK_VEHICLE){
-                    return new Movement(PlayerSide.RED,click.starti,click.startj,click.endi,click.endj,false);
-                }
-                else if(piece==ChessGridElement.BLACK_RIDER){
-                    return new Movement(PlayerSide.RED,click.starti,click.startj,click.endi,click.endj,false);
-                }
-                else if(piece==ChessGridElement.BLACK_CANNON){
-                    return new Movement(PlayerSide.RED,click.starti,click.startj,click.endi,click.endj,false);
-                }
-                else if(piece==ChessGridElement.BLACK_MINISTER){
-                    return new Movement(PlayerSide.RED,click.starti,click.startj,click.endi,click.endj,false);
-                }
-                else if(piece==ChessGridElement.BLACK_SERVANT){
-                    return new Movement(PlayerSide.RED,click.starti,click.startj,click.endi,click.endj,false);
-                }
-                else if(piece==ChessGridElement.BLACK_SOLDIER){
-                    return new Movement(PlayerSide.RED,click.starti,click.startj,click.endi,click.endj,false);
+                if(getScore(moveRed.entry)<=getScore(piece)){
+                    moveRed=click;
                 }
             }
-            CanMove move = movesRed.get(0);
-            return new Movement(PlayerSide.RED, move.starti, move.startj, move.endi, move.endj, false);
+            return new Movement(PlayerSide.RED, moveRed.starti, moveRed.startj, moveRed.endi, moveRed.endj, false);
         } else if (playerSide == PlayerSide.BLACK) {
+            CanMove moveBlack=new CanMove(ChessGridElement.EMPTY,0,0,0,0);
             for (CanMove click : movesBlack) {
                 ChessGridElement piece = grid[click.endi][click.endj];
-                if (piece == ChessGridElement.RED_GENERAL) {
-                    return new Movement(PlayerSide.BLACK, click.starti, click.startj, click.endi, click.endj, false);
-                } else if (piece == ChessGridElement.RED_VEHICLE) {
-                    return new Movement(PlayerSide.BLACK, click.starti, click.startj, click.endi, click.endj, false);
-                } else if (piece == ChessGridElement.RED_RIDER) {
-                    return new Movement(PlayerSide.BLACK, click.starti, click.startj, click.endi, click.endj, false);
-                } else if (piece == ChessGridElement.RED_CANNON) {
-                    return new Movement(PlayerSide.BLACK, click.starti, click.startj, click.endi, click.endj, false);
-                } else if (piece == ChessGridElement.RED_MINISTER) {
-                    return new Movement(PlayerSide.BLACK, click.starti, click.startj, click.endi, click.endj, false);
-                } else if (piece == ChessGridElement.RED_SERVANT) {
-                    return new Movement(PlayerSide.BLACK, click.starti, click.startj, click.endi, click.endj, false);
-                } else if (piece == ChessGridElement.RED_SOLDIER) {
-                    return new Movement(PlayerSide.BLACK, click.starti, click.startj, click.endi, click.endj, false);
+                if (getScore(moveBlack.entry) <= getScore(piece)) {
+                    moveBlack = click;
                 }
             }
-            CanMove move = movesBlack.get(0);
-            return new Movement(PlayerSide.BLACK, move.starti, move.startj, move.endi, move.endj, false);
+            return new Movement(PlayerSide.BLACK, moveBlack.starti, moveBlack.startj, moveBlack.endi, moveBlack.endj, false);
         }
         return null;
+    }
+    private static int getScore(ChessGridElement piece){
+        if(piece==ChessGridElement.BLACK_GENERAL) return 7;
+        else if(piece==ChessGridElement.BLACK_VEHICLE) return 6;
+        else if(piece==ChessGridElement.BLACK_RIDER) return 5;
+        else if(piece==ChessGridElement.BLACK_CANNON) return 4;
+        else if(piece==ChessGridElement.BLACK_MINISTER) return 3;
+        else if(piece==ChessGridElement.BLACK_SERVANT) return 2;
+        else if(piece==ChessGridElement.BLACK_SOLDIER) return 1;
+        else if(piece==ChessGridElement.RED_GENERAL) return 7;
+        else if(piece==ChessGridElement.RED_VEHICLE) return 6;
+        else if(piece==ChessGridElement.RED_RIDER) return 5;
+        else if(piece==ChessGridElement.RED_CANNON) return 4;
+        else if(piece==ChessGridElement.RED_MINISTER) return 3;
+        else if(piece==ChessGridElement.RED_SERVANT) return 2;
+        else if(piece==ChessGridElement.RED_SOLDIER) return 1;
+        return 0;
     }
 }
