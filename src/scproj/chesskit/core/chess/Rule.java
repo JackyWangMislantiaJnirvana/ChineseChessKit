@@ -151,6 +151,17 @@ public class Rule {
         } else if (piece == ChessGridElement.RED_GENERAL) {//红方帅
             int iMove = Math.abs(endi - starti);
             int jMove = Math.abs(endj - startj);
+            if(grid[endi][endj]==ChessGridElement.BLACK_GENERAL){
+                if(endj==startj){
+                    canMove=true;
+                    for(int i=endi+1;i<=starti-1;i++){
+                        if(grid[i][startj]!=ChessGridElement.EMPTY){
+                            canMove=false;
+                            break;
+                        }
+                    }
+                }
+            }
             if (endj >= 3 && endj <= 5 && endi >= 7 && endi <= 9) {
                 if ((iMove == 1 && jMove == 0) || (iMove == 0 && jMove == 1)) {
                     canMove = true;
@@ -312,6 +323,17 @@ public class Rule {
         else if(piece==ChessGridElement.BLACK_GENERAL){//黑方将
             int iMove=Math.abs(endi-starti);
             int jMove=Math.abs(endj-startj);
+            if(grid[endi][endj]==ChessGridElement.RED_GENERAL){
+                if(endj==startj){
+                    canMove=true;
+                    for(int i=starti+1;i<=endi-1;i++){
+                        if(grid[i][startj]!=ChessGridElement.EMPTY){
+                            canMove=false;
+                            break;
+                        }
+                    }
+                }
+            }
             if(endj>=3&&endj<=5&&endi>=0&&endi<=2) {
                 if ((iMove == 1 && jMove == 0) || (iMove == 0 && jMove == 1)) {
                     canMove = true;
